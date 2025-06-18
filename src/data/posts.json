@@ -1,0 +1,34 @@
+[
+  {
+    "postId": 1,
+    "name": "How I Built My First React App",
+    "time": "2025-06-10T14:30:00Z",
+    "photo": "https://example.com/images/react-app.png",
+    "likes": 12,
+    "content": "In this post, I explain step-by-step how I learned React and created my very first React app using components, state, and hooks."
+  },
+  {
+    "postId": 2,
+    "name": "My Journey with CS50: From Scratch to Projects",
+    "time": "2025-06-08T11:00:00Z",
+    "photo": "https://example.com/images/cs50-journey.jpg",
+    "likes": 27,
+    "content": "CS50 was a challenging but rewarding experience. I learned the fundamentals of programming and applied them by building real projects."
+  },
+  {
+    "postId": 3,
+    "name": "Why I Love Tailwind CSS",
+    "time": "2025-06-06T09:15:00Z",
+    "photo": "https://example.com/images/tailwind-love.jpg",
+    "likes": 19,
+    "content": "Tailwind CSS has transformed the way I style my websites. It’s fast, customizable, and lets me build responsive designs easily."
+  },
+  {
+    "postId": 4,
+    "name": "Building a Client/Admin Layout in Next.js",
+    "time": "2025-06-04T16:45:00Z",
+    "photo": "https://example.com/images/next-layout.png",
+    "likes": 34,
+    "content": "I share tips and techniques to create separate layouts for client and admin pages in Next.js, helping improve user experience and maintainability."
+  }
+]
