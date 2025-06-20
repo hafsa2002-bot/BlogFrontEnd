@@ -1,24 +1,22 @@
+'use client'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+// import { useRouter } from 'next/router'
 import React from 'react'
 
 const Navbar = () => {
+  const pathname = usePathname()
   return (
-    <div className='flex justify-center'>
-      <div className='w-10/12 rounded-full px-3 py-1 mt-6 bg-[#fccaa959] border border-gray-300 flex' >
-          <div className="w-28">
-            <img className='w-full' alt='logo' src='/images/logo.png' />
+    
+    <nav>
+      {
+        (pathname !== "/home" ) && (
+          <div className='bg-[#fcf8eff5] flex justify-center items-center border-b border-black fixed top-0 w-full z-50'>
+            Nav with search input
           </div>
-          <div className='flex'>
-            <div>Home</div>
-            <div>Explore</div>
-            <div>About</div>
-            <div>Contact</div>
-          </div>
-          <div className='flex'>
-            <div className='text-orange-500 px-2 py-1 rounded-full'>Log In</div>
-            <div className='bg-[#f89e62] px-2 py-1 rounded-full'>Sign Up</div>
-          </div>
-      </div>
-    </div>
+        )
+      }
+    </nav>
   )
 }
 
