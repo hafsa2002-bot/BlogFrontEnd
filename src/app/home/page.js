@@ -5,12 +5,12 @@ export default function Client () {
         <>
             <div className='bg-[#fcf8eff5] flex justify-center items-center border-b border-black fixed top-0 w-full z-50'>
                 <div className='w-11/12 flex justify-between items-center px-4 py-5'>
-                <div className='flex items-center gap-1.5 '>
+                <Link href="/home" className='flex items-center gap-1.5 '>
                     <div className='w-10'>
                         <img className='w-full' src="/images/logo4.png" />
                     </div>
                     <div className='text-3xl font-bold text-black mb-1.5'>Floren</div>
-                </div>
+                </Link>
                 <div className='flex gap-4'>
                     <Link href="/" className=' font-semibold cursor-pointer hover:bg-[#fcc7a3] text-sm   px-2.5 py-1.5 rounded-full '>Home</Link>
                     <Link href="/home/explore-page" className=' font-semibold cursor-pointer text-sm  hover:bg-[#fcc7a3]  px-2.5 py-1.5 rounded-full '>Explore</Link>
