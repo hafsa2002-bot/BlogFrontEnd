@@ -1,8 +1,12 @@
+'use client'
 import React from 'react'
+import { usePathname } from 'next/navigation'
 
 function Footer() {
+  const pathname = usePathname()
   return (
-    <div className='text-sm text-stone-500 flex justify-between items-center  py-4 px-6  border-t mt-2 bg-[#fcf8eff5] w-full fixed z-50'>
+    //#fcf8eff5 relative z-50
+    <div className={` text-sm text-stone-500 flex justify-between items-center  py-4 px-6  border-t mt-2 bg-[#FAF7F0] w-full ${pathname == "/home" && 'fixed bottom-0 z-50'}`}>
       <div className='flex items-center gap-1.5 '>
           <div className='w-7'>
               <img className='w-full' src="/images/logo4.png" />

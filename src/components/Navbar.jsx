@@ -12,7 +12,7 @@ const Navbar = () => {
     <div>
       {
         (pathname !== "/home" ) && (
-          <nav className='bg-[#fcf8eff5] py-5 flex justify-center w-full items-center fixed top-0 z-50 border-b border-black'>
+          <nav className='bg-[#FAF7F0] py-5 flex justify-center w-full items-center fixed top-0 z-50 border-b border-stone-300 shadow-xl'>
             <div className=' flex justify-between w-11/12 '>
               <div className='flex gap-8'>
                 <Link href="/home" className='cursor-pointer flex items-center gap-1.5 '>

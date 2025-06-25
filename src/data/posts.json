@@ -1,34 +1,70 @@
 [
-  {
-    "postId": 1,
-    "name": "How I Built My First React App",
-    "time": "2025-06-10T14:30:00Z",
-    "photo": "https://example.com/images/react-app.png",
-    "likes": 12,
-    "content": "In this post, I explain step-by-step how I learned React and created my very first React app using components, state, and hooks."
-  },
-  {
-    "postId": 2,
-    "name": "My Journey with CS50: From Scratch to Projects",
-    "time": "2025-06-08T11:00:00Z",
-    "photo": "https://example.com/images/cs50-journey.jpg",
-    "likes": 27,
-    "content": "CS50 was a challenging but rewarding experience. I learned the fundamentals of programming and applied them by building real projects."
-  },
-  {
-    "postId": 3,
-    "name": "Why I Love Tailwind CSS",
-    "time": "2025-06-06T09:15:00Z",
-    "photo": "https://example.com/images/tailwind-love.jpg",
-    "likes": 19,
-    "content": "Tailwind CSS has transformed the way I style my websites. It’s fast, customizable, and lets me build responsive designs easily."
-  },
-  {
-    "postId": 4,
-    "name": "Building a Client/Admin Layout in Next.js",
-    "time": "2025-06-04T16:45:00Z",
-    "photo": "https://example.com/images/next-layout.png",
-    "likes": 34,
-    "content": "I share tips and techniques to create separate layouts for client and admin pages in Next.js, helping improve user experience and maintainability."
-  }
-]
+    {
+      "id": 1,
+      "title": "His mother had always taught him",
+      "body": "His mother had always taught him not to ever think of himself as better than others. He'd tried to live by this motto. He never looked down on those who were less fortunate or who had less money than him. But the stupidity of the group of people he was talking to made him change his mind.",
+      "tags": ["history", "american", "crime"],
+      "reactions": {
+        "likes": 192,
+        "dislikes": 25,
+        "comments" : 0
+      },
+      "views": 305,
+      "userId": 121,
+      "image": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      "id": 2,
+      "title": "Walking through forgotten streets",
+      "body": "He wandered through narrow streets once full of laughter. Now only silence remained, echoing stories no one remembered anymore.",
+      "tags": ["travel", "mystery", "urban"],
+      "reactions": {
+        "likes": 289,
+        "dislikes": 13,
+        "comments" : 1
+      },
+      "views": 520,
+      "userId": 122
+    },
+    {
+      "id": 3,
+      "title": "The abandoned journal",
+      "body": "In the attic, she found a journal with cracked leather. Dust covered its secrets, but every word inside pulsed with life.",
+      "tags": ["fiction", "diary", "nostalgia"],
+      "reactions": {
+        "likes": 158,
+        "dislikes": 9,
+        "comments" : 3
+      },
+      "views": 401,
+      "userId": 123,
+      "image": "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      "id": 4,
+      "title": "Cracks in the concrete",
+      "body": "Even the strongest walls can crack under pressure. He learned this the hard way in both life and architecture.",
+      "tags": ["life", "philosophy", "urban"],
+      "reactions": {
+        "likes": 342,
+        "dislikes": 30,
+        "comments" : 6
+      },
+      "views": 610,
+      "userId": 124
+    },
+    {
+      "id": 5,
+      "title": "Shadows in the woods",
+      "body": "The deeper she walked into the woods, the more the shadows felt alive. Watching. Whispering. Waiting.",
+      "tags": ["thriller", "nature", "dark"],
+      "reactions": {
+        "likes": 267,
+        "dislikes": 18,
+        "comments" : 45
+      },
+      "views": 486,
+      "userId": 125,
+      "image": "https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=800&q=80"
+    }
+  ]
