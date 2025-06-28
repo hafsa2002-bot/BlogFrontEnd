@@ -1,33 +1,18 @@
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import { headers } from "next/headers";
+'use client'
+// import { headers } from "next/headers";
 import AdminSideLayout from "@/components/AdminSideLayout";
 import ClientSideLayout from "@/components/ClientSideLayout";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-export const metadata = {
-  title: "My Blog",
-  description: "A modern blog with admin panel",
-};
+import { usePathname } from "next/navigation";
 
 export default function RootLayout({ children }) {
+  const pathname = usePathname()
+  const array = ["/login", "/register"]
   // const pathname = headers().get("x-next-url") || "/"
   // const isAdminRoute = pathname.startsWith("/admin")
   return (
-    <html lang="en">
-      <body  className=''>
-        {/* bg-[#FAF7F0] pt-28 */}
+    <div className={`bg-[#FAF7F0] ${ (array.includes(pathname) ? '' : 'pt-28')}`}>
         {/* {
           isAdminRoute ? (
             <AdminSideLayout>{children}</AdminSideLayout>
@@ -35,11 +20,9 @@ export default function RootLayout({ children }) {
             <ClientSideLayout>{children}</ClientSideLayout>
           )
         } */}
-        {/* <Navbar />
+        <Navbar />
         <main>{children}</main>
-        <Footer /> */}
-        {children}
-      </body>
-    </html>
+        <Footer />
+    </div>
   );
 }

@@ -11,11 +11,11 @@ const Navbar = () => {
     
     <div>
       {
-        (pathname !== "/home" ) && (
+        (pathname !== "/" &&  pathname !== "/login" && pathname !== "/register"  ) && (
           <nav className='bg-[#FAF7F0] py-5 flex justify-center w-full items-center fixed top-0 z-50 border-b border-stone-300 shadow-xl'>
             <div className=' flex justify-between w-11/12 '>
               <div className='flex gap-8'>
-                <Link href="/home" className='cursor-pointer flex items-center gap-1.5 '>
+                <Link href="/" className='cursor-pointer flex items-center gap-1.5 '>
                     <div className='w-10'>
                         <img className='w-full' src="/images/logo4.png" />
                     </div>
@@ -31,8 +31,8 @@ const Navbar = () => {
                 </div>
               </div>
               <div className='flex items-center gap-3'>
-                <div className='text-[#ec8b4a] cursor-pointer hover:bg-[#F27C3A] hover:text-white px-2.5 py-1.5 rounded-full font-semibold text-sm ml-7'>Log in</div>
-                <div className='cursor-pointer bg-[#F27C3A] px-4 py-1.5 rounded-full font-semibold text-sm text-white'>Create account</div>
+                <Link href="/login" className='text-[#ec8b4a] cursor-pointer hover:bg-[#F27C3A] hover:text-white px-2.5 py-1.5 rounded-full font-semibold text-sm ml-7'>Log in</Link>
+                <Link href="/register" className='cursor-pointer bg-[#F27C3A] px-4 py-1.5 rounded-full font-semibold text-sm text-white'>Create account</Link>
               </div>
             </div>
           </nav>

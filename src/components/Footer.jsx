@@ -6,7 +6,7 @@ function Footer() {
   const pathname = usePathname()
   return (
     //#fcf8eff5 relative z-50
-    <div className={` text-sm text-stone-500 flex justify-between items-center  py-4 px-6  border-t mt-2 bg-[#FAF7F0] w-full ${pathname == "/home" && 'fixed bottom-0 z-50'}`}>
+    <div className={` text-sm text-stone-500 flex justify-between items-center  py-4 px-6  border-t mt-2 bg-[#FAF7F0] w-full ${pathname == "/" && 'fixed bottom-0 z-50'}`}>
       <div className='flex items-center gap-1.5 '>
           <div className='w-7'>
               <img className='w-full' src="/images/logo4.png" />

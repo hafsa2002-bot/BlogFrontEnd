@@ -1,7 +1,6 @@
 'use client'
 import { Facebook, Github, Home, Instagram, Plus, Tag, Twitch, Twitter } from "lucide-react";
 import Link from "next/link";
-import posts from '../../../data/posts.json'
 import ExplorePosts from "@/components/ExplorePosts";
 import { useState } from "react";
 
@@ -45,33 +44,33 @@ export default function Explore(){
                 <div className=" bg-white border border-stone-300 rounded-xl flex flex-col justify-center items-center gap-2 p-3">
                     <h2 className="font-semibold text-2xl">Floren is a creative space for thinkers, writers, and idea sharers.</h2>
                     <p className="text-stone-500">Join a growing community where you can express yourself, explore new thoughts, and connect with others.</p>
-                    <div className='cursor-pointer w-full text-center bg-[#F27C3A] px-4 py-1.5 rounded-full font-semibold text-sm text-white'>Create account</div>
-                    <div className='text-[#F27C3A] w-full text-center cursor-pointer hover:border hover:border-[#F27C3A]  px-2.5 py-1.5 rounded-full font-semibold text-sm'>Log in</div>
+                    <Link href="/register" className='cursor-pointer w-full text-center bg-[#F27C3A] px-4 py-1.5 rounded-full font-semibold text-sm text-white'>Create account</Link>
+                    <Link href="/login" className='text-[#F27C3A] w-full text-center cursor-pointer hover:border hover:border-[#F27C3A]  px-2.5 py-1.5 rounded-full font-semibold text-sm'>Log in</Link>
                 </div>
                 <div>
                     <ul className=" ">
                         <li className="hover:bg-[#F27C3A] px-3 py-1.5 rounded-lg" >
-                            <Link href="/home"  className="flex items-center gap-1.5 hover:underline" >
+                            <Link href="/"  className="flex items-center gap-1.5 hover:underline" >
                                 {/* <Home/> */}
                                 <img className="w-6 h-6" src="/images/icons8-home-48.png" alt="home icon" />
                                 Home
                             </Link>
                         </li>
                         <li className="hover:bg-[#F27C3A] px-3 py-1.5 rounded-lg">
-                            <Link href="/home" className="flex items-center gap-1.5  hover:underline" >
+                            <Link href="/" className="flex items-center gap-1.5  hover:underline" >
                                 {/* <Tag/> */}
                                 <img className="w-6 h-6" src="/images/icons8-label-emoji-48.png" alt="tags" />
                                 Tags
                             </Link>
                         </li>
                         <li className="hover:bg-[#F27C3A] px-3 py-1.5 rounded-lg">
-                            <Link href="/home" className="flex items-center gap-1.5 hover:underline" >
+                            <Link href="/" className="flex items-center gap-1.5 hover:underline" >
                                 <img  className="w-6 h-6" src="/images/icons8-smiling-face-with-sunglasses-48.png"  alt="about"/>
                                 About
                             </Link>
                         </li>
                         <li className="hover:bg-[#F27C3A] px-3 py-1.5 rounded-lg">
-                            <Link href="/home" className="flex items-center gap-1.5 hover:underline" >
+                            <Link href="/" className="flex items-center gap-1.5 hover:underline" >
                                 <img className="w-6 h-6" src="/images/icons8-open-mailbox-with-raised-flag-48.png" alt="contact" />
                                 Contact
                             </Link>
