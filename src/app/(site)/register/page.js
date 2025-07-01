@@ -3,7 +3,7 @@ import ConfirmPasswordInput from "@/components/ConfirmPasswordInput"
 import EmailInput from "@/components/EmailInput"
 import PasswordInput from "@/components/PasswordInput"
 import Link from "next/link"
-import { useRouter } from "next/router"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 export default function Register() {
 
