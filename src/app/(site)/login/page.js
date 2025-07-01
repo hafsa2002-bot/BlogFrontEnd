@@ -1,8 +1,10 @@
 'use client'
+import { signIn } from "@/auth"
 import EmailInput from "@/components/EmailInput"
 import PasswordInput from "@/components/PasswordInput"
 import Link from "next/link"
 import styled from "styled-components"
+import { login } from "../../../../lib/actions/auth"
 
 export default function Login() {
   return (
@@ -31,6 +33,13 @@ export default function Login() {
                 <img className="w-7 h-7" src="/images/icons8-google-48.png" />
                 Log in with Google 
             </div> */}
+            <div className="w-7/12 border-b border-stone-400 text-stone-600 mt-3  ">
+                <p className="text-center bg-[#FAF7F0] w-26 m-auto relative top-3 ">or continue</p>
+            </div>
+            <button onClick={() => login()} className="bg-white w-7/12 flex items-center justify-center font-semibold gap-2 rounded-xl py-3  text-stone-800 mt-7 border border-stone-300 cursor-pointer" > 
+                <img className="w-7 h-7" src="/images/icons8-github-64.png" />
+                Log in with GitHub
+            </button>
             <p className="text-stone-600 mt-6 ">Don't have an account? <Link href="/register" className="text-black font-semibold hover:underline">Sign Up</Link></p>
         </div>
 

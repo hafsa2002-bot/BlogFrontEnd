@@ -3,7 +3,20 @@ import ConfirmPasswordInput from "@/components/ConfirmPasswordInput"
 import EmailInput from "@/components/EmailInput"
 import PasswordInput from "@/components/PasswordInput"
 import Link from "next/link"
+import { useRouter } from "next/router"
+import { useState } from "react"
 export default function Register() {
+
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [psswrdConfirmation, setPsswrdConfirmation] = useState('')
+  const router = useRouter();
+  /*
+  const createAccount = async(e) => {
+    e.preventDefault();
+    await axios.get('http')
+  }
+    */
   return (
       <div className="flex">
         <div className="w-1/2 h-screen flex flex-col items-center justify-center  ">
