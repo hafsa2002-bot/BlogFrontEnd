@@ -40,7 +40,7 @@ export default function Login() {
                 <img className="w-7 h-7" src="/images/icons8-github-64.png" />
                 Log in with GitHub
             </button>
-            <p className="text-stone-600 mt-6 ">Don't have an account? <Link href="/register" className="text-black font-semibold hover:underline">Sign Up</Link></p>
+            <p className="text-stone-600 mt-6 ">{"Don't have an account?"} <Link href="/register" className="text-black font-semibold hover:underline">Sign Up</Link></p>
         </div>
 
         <div className="w-1/2 p-3">
