@@ -11,7 +11,12 @@ export default function Home() {
             <div className='w-11/12 flex justify-between items-center px-4 py-5'>
             <Link href="/" className='flex items-center gap-1.5 '>
                 <div className='w-10'>
-                    <img className='w-full' src="/images/logo4.png" />
+                    {/* <img className='w-full' src="/images/logo4.png" /> */}
+                    <Image
+                        src="/images/logo4.png"
+                        alt="Logo"
+                        className="w-full"
+                    />
                 </div>
                 <div className='text-3xl font-bold text-black mb-1.5'>Floren</div>
             </Link>
