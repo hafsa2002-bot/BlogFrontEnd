@@ -7,7 +7,7 @@ export default function Home() {
   // redirect('/')
   return(
     <div className="bg-[#FAF7F0]">
-        <div className='bg-[#FAF7F0] flex justify-center items-center border-b border-black fixed top-0 w-full z-50'>
+        <div className='bg-[#FAF7F0] h-[12vh] flex justify-center items-center border-b border-black fixed top-0 w-full z-50'>
             <div className='w-11/12 flex justify-between items-center px-4 py-5'>
             <Link href="/" className='flex items-center gap-1.5 '>
                 <div className='w-10'>
@@ -16,6 +16,8 @@ export default function Home() {
                         src="/images/logo4.png"
                         alt="Logo"
                         className="w-full"
+                        width={40}
+                        height={40}
                     />
                 </div>
                 <div className='text-3xl font-bold text-black mb-1.5'>Floren</div>
@@ -44,7 +46,7 @@ export default function Home() {
             </div>
         </div>
         <section className="flex justify-center overflow-hidden " >
-            <div className="flex-col flex justify-center min-h-[72vh] w-11/12 pl-4">
+            <div className="flex-col flex justify-center min-h-[79vh] w-11/12 pl-4">
                 <h1 className="text-8xl  font-serif">
                     Exploring Life <br/> Through Words
                 </h1>
