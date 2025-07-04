@@ -1,9 +1,24 @@
-import { redirect } from "next/navigation";
+'use client'
 import Image from "next/image";
-import { Plus } from "lucide-react";
 import Link from "next/link";
+import HomePage from "@/components/HomePage";
+import { useSession } from "next-auth/react";
+import Loader from "@/components/Loader";
 
 export default function Home() {
+    // const session = await auth()
+    // console.log(session)
+    const {data: session, status} = useSession()
+    const isLoggedIn = session?.user
+
+    if(status === "loading" || !isLoggedIn ) return <Loader/>
+    if(isLoggedIn){
+        return (
+            <div>
+                <HomePage/>
+            </div>
+        )
+    }
   // redirect('/')
   return(
     <div className="bg-[#FAF7F0]">

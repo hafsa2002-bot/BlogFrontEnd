@@ -2,9 +2,15 @@
 import { Facebook, Github, Home, Instagram, Plus, Tag, Twitch, Twitter } from "lucide-react";
 import Link from "next/link";
 import ExplorePosts from "@/components/ExplorePosts";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import Loader from "@/components/Loader";
 
 export default function Explore(){
+    const {data: session, status} = useSession()
+    const isLoggedIn = session?.user
+    const router = useRouter()
     const tags = [
         "#webdev",
         "#programming",
@@ -37,6 +43,15 @@ export default function Explore(){
         "#development",
         "#php",
     ]
+
+    useEffect(() => {
+        if (isLoggedIn || status === "loading") {
+            router.push("/")
+        }
+    }, [isLoggedIn, router])
+
+    if (status === "loading" || isLoggedIn) return <Loader/>
+
     return (
         <div className="text-black flex justify-between  px-4">
             {/* left side */}

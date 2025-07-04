@@ -5,6 +5,7 @@ import AdminSideLayout from "@/components/AdminSideLayout";
 import ClientSideLayout from "@/components/ClientSideLayout";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { SessionProvider } from "next-auth/react"
 
 export const metadata = {
   title: "My Blog",
@@ -16,19 +17,10 @@ export default function RootLayout({ children }) {
   // const isAdminRoute = pathname.startsWith("/admin")
   return (
     <html lang="en">
-      <body  className=''>
-        {/* bg-[#FAF7F0] pt-28 */}
-        {/* {
-          isAdminRoute ? (
-            <AdminSideLayout>{children}</AdminSideLayout>
-          ) : (
-            <ClientSideLayout>{children}</ClientSideLayout>
-          )
-        } */}
-        {/* <Navbar />
-        <main>{children}</main>
-        <Footer /> */}
-        {children}
+      <body  className='bg-[#FAF7F0]'>
+        <SessionProvider>
+          {children}
+        </SessionProvider>
       </body>
     </html>
   );

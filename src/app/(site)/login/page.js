@@ -1,16 +1,43 @@
 'use client'
-import { signIn } from "@/auth"
+import {signIn} from "next-auth/react"
 import EmailInput from "@/components/EmailInput"
 import PasswordInput from "@/components/PasswordInput"
 import Link from "next/link"
 import styled from "styled-components"
 import { login } from "../../../../lib/actions/auth"
+import { X } from "lucide-react"
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import ErrorMessage from "@/components/ErrorMessage"
 
 export default function Login() {
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [error, setError] = useState("")
+    const router = useRouter()
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+
+        const res = await signIn("credentials", {
+            redirect: false,
+            email, 
+            password
+        })
+
+        console.log("Login res:", res);
+
+        if(res?.ok){
+            router.push("/profile")
+        }else{
+            setError(res.error || "Invalid crendentials")
+            setTimeout(() => setError(""), 2000)
+        }
+    }
   return (
     <div className="flex">
         <div className="w-1/2 h-screen flex flex-col items-center justify-center  ">
-            <Link href="/" className='cursor-pointer flex items-center gap-1.5 w-7/12 text-start relative bottom-24 mb-3'>
+            <Link href="/" className='cursor-pointer flex items-center gap-1.5 w-7/12 text-start relative bottom-10 mb-3'>
                 <div className='w-10'>
                     <img className='w-full' src="/images/logo4.png" />
                 </div>
@@ -20,9 +47,9 @@ export default function Login() {
                 <h2 className="text-4xl font-bold font-serif mb-1">Welcome Back!</h2>
                 <p className="text-sm text-stone-600">Please enter log in details below</p>
             </div>
-            <form className="mt-7 w-7/12 flex flex-col">
-                <EmailInput/>
-                <PasswordInput/>
+            <form onSubmit={handleLogin} className="mt-7 w-7/12 flex flex-col">
+                <EmailInput email={email} setEmail={setEmail} />
+                <PasswordInput password={password} setPassword={setPassword} />
                 {/* <p className="w-full text-end font-semibold text-stone-700 mt-2 mb-5">Forget password?</p> */}
                 <button className="bg-[#F27C3A] rounded-xl py-3 text-lg font-semibold text-white mt-5"> Log in </button>
             </form>
@@ -36,10 +63,20 @@ export default function Login() {
             <div className="w-7/12 border-b border-stone-400 text-stone-600 mt-3  ">
                 <p className="text-center bg-[#FAF7F0] w-26 m-auto relative top-3 ">or continue</p>
             </div>
-            <button onClick={() => login()} className="bg-white w-7/12 flex items-center justify-center font-semibold gap-2 rounded-xl py-3  text-stone-800 mt-7 border border-stone-300 cursor-pointer" > 
+            <button 
+                // onClick={() => login()} 
+                onClick={() => signIn("github", { callbackUrl: "/profile" })}
+                className="bg-white w-7/12 flex items-center justify-center font-semibold gap-2 rounded-xl py-3  text-stone-800 mt-7 border border-stone-300 cursor-pointer" 
+            > 
                 <img className="w-7 h-7" src="/images/icons8-github-64.png" />
                 Log in with GitHub
             </button>
+
+            {/* error message */}
+            {/* <div className="fixed top-2 right-1/2 translate-x-1/2 w-fit font-semibold z-50 bg-red-500 text-white  text-sm py-1.5 px-3 rounded-md mt-2 flex justify-center items-center gap-1">
+                <X/> Error message
+            </div> */}
+
             <p className="text-stone-600 mt-6 ">{"Don't have an account?"} <Link href="/register" className="text-black font-semibold hover:underline">Sign Up</Link></p>
         </div>
 
@@ -50,6 +87,8 @@ export default function Login() {
                 <p className="text-stone-600 text-lg mt-4  w-1/2 text-center">Start writing, exploring, and connecting through your words.</p>
             </div>
         </div>
+
+        {error && <ErrorMessage message={error} />}
     </div>
   )
 }

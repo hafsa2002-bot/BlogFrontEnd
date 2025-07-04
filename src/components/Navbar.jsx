@@ -1,17 +1,23 @@
 'use client'
 import { Search } from 'lucide-react'
+import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 // import { useRouter } from 'next/router'
 import React from 'react'
+import { logout } from '../../lib/actions/auth'
 
 const Navbar = () => {
   const pathname = usePathname()
+  const {data: session, status} = useSession()
+  const isLoggedIn = session?.user
+
+  if(status == "loading" && pathname=== "/explore-page") return null
   return (
-    
     <div>
       {
-        (pathname !== "/" &&  pathname !== "/login" && pathname !== "/register"  ) && (
+        // || isLoggedIn
+        (pathname !== "/" &&  pathname !== "/login" && pathname !== "/register" ) && (
           <nav className='bg-[#FAF7F0] py-5 flex justify-center w-full items-center fixed top-0 z-50 border-b border-stone-300 shadow-xl'>
             <div className=' flex justify-between w-11/12 '>
               <div className='flex gap-8'>
@@ -31,8 +37,19 @@ const Navbar = () => {
                 </div>
               </div>
               <div className='flex items-center gap-3'>
-                <Link href="/login" className='text-[#ec8b4a] cursor-pointer hover:bg-[#F27C3A] hover:text-white px-2.5 py-1.5 rounded-full font-semibold text-sm ml-7'>Log in</Link>
-                <Link href="/register" className='cursor-pointer bg-[#F27C3A] px-4 py-1.5 rounded-full font-semibold text-sm text-white'>Create account</Link>
+                {
+                  !isLoggedIn ? (
+                    <>
+                      <Link href="/login" className='text-[#ec8b4a] cursor-pointer hover:bg-[#F27C3A] hover:text-white px-2.5 py-1.5 rounded-full font-semibold text-sm ml-7'>Log in</Link>
+                      <Link href="/register" className='cursor-pointer bg-[#F27C3A] px-4 py-1.5 rounded-full font-semibold text-sm text-white'>Create account</Link>
+                    </>
+                  ):(
+                    <>
+                      <Link href="/profile" className='text-black font-semibold hover:underline'>Profile</Link>
+                      <div onClick={() => logout()} className='text-red-600 font-semibold hover:underline'>Logout</div>
+                    </>
+                  )
+                }
               </div>
             </div>
           </nav>

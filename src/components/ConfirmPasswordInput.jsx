@@ -1,11 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
 
-function ConfirmPasswordInput() {
+function ConfirmPasswordInput({psswrdConfirmation, setPsswrdConfirmation}) {
   return (
     <StyledWrapper>
         <div className="input-group mt-5">
-            <input 
+            <input
+                value={psswrdConfirmation}
+                onChange={(e) => setPsswrdConfirmation(e.target.value)} 
                 type="password"
                 id="confirmPassword"
                 name="confirmPassword"

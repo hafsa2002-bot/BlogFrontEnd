@@ -1,12 +1,17 @@
 'use client'
 import React from 'react'
 import { usePathname } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 
 function Footer() {
+  const {data: session, status} = useSession()
+  const isLoggedIn = session?.user
   const pathname = usePathname()
+  
+  if(status === "loading") return null
   return (
     //#fcf8eff5 relative z-50
-    <div className={` text-sm text-stone-500 flex justify-between items-center  py-4 px-6  border-t mt-2 bg-[#FAF7F0] w-full h-[9vh] ${pathname == "/" && 'fixed bottom-0 z-50'}`}>
+    <div className={` text-sm text-stone-500 flex justify-between items-center  py-4 px-6  border-t mt-2 bg-[#FAF7F0] w-full h-[9vh] ${(pathname == "/" && !isLoggedIn ) ? 'fixed bottom-0 z-50  ' : 'border-stone-300'}`}>
       <div className='flex items-center gap-1.5 '>
           <div className='w-7'>
               <img className='w-full' src="/images/logo4.png" />

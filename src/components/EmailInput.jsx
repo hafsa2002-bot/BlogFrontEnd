@@ -1,11 +1,13 @@
 import styled from 'styled-components'
 import React from 'react'
 
-function EmailInput() {
+function EmailInput({email, setEmail}) {
   return (
     <StyledWrapper>
         <div className="input-group">
-            <input 
+            <input
+                value={email}
+                onChange={(e) => setEmail(e.target.value)} 
                 type="email"
                 id="mail"
                 name="mail"
