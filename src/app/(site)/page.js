@@ -11,7 +11,7 @@ export default function Home() {
     const {data: session, status} = useSession()
     const isLoggedIn = session?.user
 
-    if(status === "loading" || !isLoggedIn ) return <Loader/>
+    if(status === "loading" ) return <Loader/>
     if(isLoggedIn){
         return (
             <div>
