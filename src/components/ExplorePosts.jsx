@@ -5,6 +5,7 @@ import posts from '../data/posts.json'
 import { Heart, Image, Images, MessageCircle, Plus, SendHorizonal, User, UserRound } from 'lucide-react'
 import ProfileOverview from './ProfileOverview'
 import { useSession } from 'next-auth/react'
+import NewPost from './User/NewPost'
 
 function ExplorePosts() {
     const [showProfile, setShowProfile] = useState(null)
@@ -30,13 +31,14 @@ function ExplorePosts() {
                                 type="text" 
                                 placeholder='Tell your friends about your thoughts...' 
                             />
-                            <div className=' flex justify-center items-center gap-1.5  px-1.5 py-1.5 rounded-xl bg-[#F27C3A] text-white '>
+                            <div
+                                onClick={() => setShowNewPost(true)}  
+                                className=' flex justify-center items-center gap-1.5 w-2/12 px-1.5 py-1.5 rounded-xl bg-[#F27C3A] text-white '
+                            >
                                 Post <SendHorizonal size={17}/> 
                             </div>
                             {
-                                showNewPost && (
-                                    <div className='absolute top-0 bg-red-500 rounded-lg text-white text-3xl font-semibold'>Hello</div>
-                                )
+                                showNewPost && <NewPost setShowNewPost={setShowNewPost} />
                             }
                         </div>
                         {/* <div className='border border-stone-300 text-stone-500 font-semibold cursor-pointer rounded-lg flex gap-2 px-2 py-1 justify-center items-center text-sm'>
