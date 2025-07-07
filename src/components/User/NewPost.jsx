@@ -1,27 +1,53 @@
 import { ChevronRight, Image, NotepadText, Plus, SendHorizonal, Smile, Sticker, UserRound, X } from 'lucide-react'
 import { useSession } from 'next-auth/react'
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import axios from 'axios'
 
 function NewPost({setShowNewPost}) {
     const {data: session, status} = useSession()
     const formRef = useRef(null)
+    const [content, setContent] = useState("")
+    const [error, setError] = useState("")
+    const [success, setSuccess] = useState("");
     // const isLoggedIn = session?.user
 
+    
     const handleClickOutside = (event) => {
         if(formRef.current && !formRef.current.contains(event.target)){
             setShowNewPost(false)
         }
     }
-
+    
     useEffect(() => {
         document.addEventListener("mousedown", handleClickOutside);
         return () => {
             document.removeEventListener("mousedown", handleClickOutside)
         }
     }, [])
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        setError("")
+        setSuccess("");
+
+        try{
+            await axios.post("/api/posts", {
+                content,
+            })
+
+            setSuccess("Post created!")
+            setContent("")
+        }catch(error){
+            setError(error.response?.data.message || "Failed to create post")
+        }
+    }
   return (
     <div  className='w-screen h-screen top-0  right-0 fixed z-50 flex justify-center items-center ' style={{ backgroundColor: "rgba(0, 0, 0, 0.7)" }}>
-        <form ref={formRef} className=' bg-white pb-4 border border-stone-300  lg:w-1/2 w-11/12  rounded-md  flex flex-col justify-center gap-4 overflow-hidden'>
+        <form 
+            ref={formRef}
+            onSubmit={handleSubmit} 
+            className=' bg-white pb-4 border border-stone-300  lg:w-1/2 w-11/12  rounded-md  flex flex-col justify-center gap-4 overflow-hidden'
+        >
             <div className='px-5 py-3 flex justify-between border-b border-stone-300'>
                 <div
                     onClick={() => setShowNewPost(false)} 
@@ -31,6 +57,9 @@ function NewPost({setShowNewPost}) {
                 </div>
                 <h3 className='text-xl font-bold'>New post</h3>
                 <div><NotepadText size={22} /></div>
+                
+                {error && <p className="text-red-500">{error}</p>}
+                {success && <p className="text-green-500">{success}</p>}
             </div>
             <div className='px-4 border-b border-stone-300 pb-3 flex flex-col gap-2.5 w-full'>
                 <div className=' flex gap-2'>
@@ -46,8 +75,11 @@ function NewPost({setShowNewPost}) {
                             </div>
                         </div>
                         <textarea
+                            value={content}
+                            onChange={(e) => setContent(e.target.value)}
                             placeholder="What's new?"
                             className="w-full h-32 mt-2 resize-none rounded-md  focus:outline-none "
+                            required
                         />
                         <div className='flex text-stone-600'>
                             <div className='relative group hover:bg-stone-100 px-2 py-1.5 rounded-lg cursor-pointer flex justify-center items-center' >
@@ -72,7 +104,7 @@ function NewPost({setShowNewPost}) {
                 <div className=' border border-[#F27C3A] text-[#F27C3A] cursor-pointer w-fit px-2 py-1.5 rounded-xl '>
                     Save draft
                 </div>
-                <button className=' flex justify-center cursor-pointer items-center gap-1.5 w-fit px-2 py-1.5 rounded-xl bg-[#F27C3A] text-white '>
+                <button type="submit" className=' flex justify-center cursor-pointer items-center gap-1.5 w-fit px-2 py-1.5 rounded-xl bg-[#F27C3A] text-white '>
                     Publish <SendHorizonal size={17}/> 
                 </button>
             </div>
