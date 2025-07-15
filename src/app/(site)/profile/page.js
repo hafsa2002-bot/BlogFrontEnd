@@ -3,6 +3,7 @@
 "use client"
 import Loader from "@/components/Loader"
 import axios from "axios"
+import { User2 } from "lucide-react"
 import {useSession} from "next-auth/react"
 import { useEffect, useState } from "react"
 
@@ -32,8 +33,25 @@ export default function ProfilePage() {
   // if(status === "loading" || loading) return <Loader/>
   if(!session) return <p>You must be logged in</p>
   return (
-    <div className="border">
+    <div className="">
         {/* user info */}
+        <div>
+          <div>
+            {
+              userInfo?.profileImage 
+              ? (
+                <div>
+                  <img src={`${userInfo?.profileImage}`} alt="profile image" />
+                </div>
+              ):(
+                <div className="w-28 h-28 bg-stone-300 flex justify-center items-center rounded-full border border-stone-400 overflow-hidden">
+                  <User2 size={120} fill="gray" strokeWidth={0} className="relative top-4" />
+                </div>
+              )
+            }
+          </div>
+          <div></div>
+        </div>
         <div>
           <div className="text-4xl font-semibold text-red-500">
             {userInfo?.email}
