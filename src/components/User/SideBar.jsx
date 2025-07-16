@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import NavLink from '../NavLink'
 import { useSession } from 'next-auth/react'
 import { usePathname } from 'next/navigation'
+import { logout } from '../../../lib/actions/auth'
 
 function SideBar() {
     const pathname = usePathname()
@@ -11,7 +12,7 @@ function SideBar() {
     const isLoggedIn = session?.user
     const [showMore, setShowMore] = useState(false)
 
-    if(status == "loading" || pathname=== "/explore-page") return null
+    if(status == "loading" || pathname === "/explore-page") return null
     return (
     <div className=' w-[18%] px-3 pt-7 pb-4 border-r border-stone-300 h-screen fixed left-0 top-0 flex flex-col justify-center'>
         <div>
@@ -59,7 +60,12 @@ function SideBar() {
                                 <li className='flex justify-between items-center hover:bg-stone-200 rounded-xl p-2 cursor-pointer'>Apparence <ArrowRight size={20} /> </li>
                                 <li className='hover:bg-stone-200 rounded-xl p-2 cursor-pointer'>Settings</li>
                             </ul>
-                            <div className='p-2 flex gap-2 text-red-600'> <LogOut size={20} /> Logout</div>
+                            <div
+                                onClick={() => logout()} 
+                                className='p-2 flex items-center gap-2 text-red-600'
+                            >
+                                <LogOut size={20} /> Logout
+                            </div>
                         </div>
                     </div>
                 )

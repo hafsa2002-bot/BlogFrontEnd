@@ -44,17 +44,17 @@ export default function Register() {
         password,
       })
       setSuccess("Account created successfully!")
-      // setTimeout(() => setSuccess(""), 2000)
+      setTimeout(() => setSuccess(""), 2000)
       setEmail("")
       setPassword("")
       setPsswrdConfirmation("")
 
       setSuccess("Account created successfully!");
 
-      // Wait a bit before redirecting
       setTimeout(() => {
-        setSuccess(""); // Optional: clear it
-        router.push("/login");
+        setSuccess(""); 
+        // router.push("/login");
+        router.push(`/complete-profile?user=${res.data.userId}`);
       }, 3000);
 
     } catch(error){

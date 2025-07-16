@@ -60,7 +60,7 @@ export default function Home() {
             </div>
             </div>
         </div>
-        <section className="flex justify-center overflow-hidden " >
+        <section className="flex justify-center overflow-hidden mt-14 " >
             <div className="flex-col flex justify-center min-h-[79vh] w-11/12 pl-4">
                 <h1 className="text-8xl  font-serif">
                     Exploring Life <br/> Through Words

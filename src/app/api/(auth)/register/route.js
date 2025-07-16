@@ -22,5 +22,6 @@ export async function POST(req) {
         password: hashedPassword,
     })
 
-    return NextResponse.json({message: "User created", userId: newUser}, {status: 200})
+    // return NextResponse.json({message: "User created", userId: newUser}, {status: 200})
+    return NextResponse.json({message: "User created", userId: newUser._id}, {status: 200})
 }

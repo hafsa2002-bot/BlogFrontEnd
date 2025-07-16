@@ -5,7 +5,8 @@ import Post from "../../../../../lib/models/Post";
 export const GET = async (req, {params}) => {
     try{
         await connect()
-        const post = await Post.findById(params.id)
+        const { id } = await params
+        const post = await Post.findById(id)
 
         if(!post){
             return new NextResponse("Post not found", {status: 404})
