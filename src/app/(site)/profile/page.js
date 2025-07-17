@@ -3,7 +3,7 @@
 "use client"
 import Loader from "@/components/Loader"
 import axios from "axios"
-import { Bookmark, BookMarked, Grid3X3, Settings, User2 } from "lucide-react"
+import { Bookmark, BookMarked, Grid3X3, NotebookPen, Settings, User2 } from "lucide-react"
 import {useSession} from "next-auth/react"
 import { useEffect, useState } from "react"
 
@@ -90,14 +90,29 @@ export default function ProfilePage() {
                   </div>
                 </div>
                 <div>
-                  <ul>
-                    {posts?.map((post) => (
-                      <li key={post._id} className="p-2 my-2">
-                        <p>{post.content}</p>
-                        <p className="text-sm text-gray-500">{post.createdAt}</p>
-                      </li>
-                    ))}
-                  </ul>
+                  <div>
+
+                  </div>
+                  <div>
+                    {
+                      posts.length > 0 
+                      ? (
+                        posts?.map((post) => (
+                          <div key={post._id} className="p-2 my-2">
+                            <p>{post.content}</p>
+                            <p className="text-sm text-gray-500">{post.createdAt}</p>
+                          </div>
+                        ))
+                      ): (
+                        <div className="h-70 w-full text-3xl font-semibold text-stone-500 flex flex-col justify-center items-center">
+                          <div className="w-14 h-14 rounded-full border-3  flex justify-center items-center">
+                            <NotebookPen size={30} />
+                          </div>
+                          No posts Yet
+                        </div>
+                      )
+                    }
+                  </div>
                 </div>
               </div>
             </>
@@ -106,29 +121,6 @@ export default function ProfilePage() {
             <Loader/>
           )
         }
-
-
-
-
-
-
-
-
-
-
-
-
-        <div>
-          <div className="text-4xl font-semibold text-red-500">
-            {userInfo?.email}
-            {userInfo?._id}
-          </div>
-          <div></div>
-        </div>
-        <h1 className="text-2xl font-semibold pt-28">User Signed in with name: <span className="text-base">{session?.user?.email}</span></h1>
-
-        <h2 className="text-xl font-semibold">My Posts</h2>
-        
     </div>
   )
 }
