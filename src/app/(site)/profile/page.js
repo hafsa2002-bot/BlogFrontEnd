@@ -2,8 +2,9 @@
 // import { auth } from "@/auth";
 "use client"
 import Loader from "@/components/Loader"
+import NewPost from "@/components/User/NewPost"
 import axios from "axios"
-import { Bookmark, BookMarked, Grid3X3, NotebookPen, Settings, User2 } from "lucide-react"
+import { Bookmark, BookMarked, Grid3X3, NotebookPen, SendHorizonal, Settings, User2, UserRound } from "lucide-react"
 import {useSession} from "next-auth/react"
 import { useEffect, useState } from "react"
 
@@ -12,6 +13,7 @@ export default function ProfilePage() {
   const [userInfo, setUserInfo] = useState({})
   const [loading, setLoading] = useState(true)
   const {data: session, status} = useSession()
+  const [showNewPost, setShowNewPost] = useState(false)
 
   const fetchUserInfo = async () => {
     axios.get("/api/users/me")
@@ -33,12 +35,12 @@ export default function ProfilePage() {
   // if(status === "loading" || loading) return <Loader/>
   if(!session) return <p>You must be logged in</p>
   return (
-    <div className="bg-white px-7 py-5 rounded-2xl">
+    <div className="bg-white px-7 py-5 rounded-2xl w-10/12">
         {
           !loading
           ? (
-            <>
-              <div className="flex justify-between mb-14 ">
+            <div className=" flex flex-col items-center">
+              <div className="flex justify-between mb-14 mt-5 w-11/12 ">
                 <div className="">
                   {
                     userInfo?.profileImage 
@@ -47,8 +49,13 @@ export default function ProfilePage() {
                         <img src={`${userInfo?.profileImage}`} alt="profile image" />
                       </div>
                     ):(
-                      <div className="w-34 h-34 bg-stone-200 flex justify-center items-center rounded-full border border-stone-400 overflow-hidden">
-                        <User2 size={130} fill="gray" strokeWidth={0} className="relative top-5" />
+                      // <div className="w-34 h-34 bg-stone-200 flex justify-center items-center rounded-full border border-stone-400 overflow-hidden">
+                      //   <User2 size={130} fill="gray" strokeWidth={0} className="relative top-5" />
+                      // </div>
+                      <div className=' w-34 h-34 '>
+                          <div className=' w-full h-full border-2 border-stone-300 rounded-full bg-stone-300 text-white flex justify-center items-end overflow-hidden cursor-pointer ' >
+                              <UserRound fill="white" strokeWidth={0} size={130} className='relative top-5' />
+                          </div>
                       </div>
                     )
                   }
@@ -67,19 +74,13 @@ export default function ProfilePage() {
                     <div className="text-stone-500 flex gap-1.5 cursor-pointer"><span className="text-black font-semibold">{userInfo?.following?.length}</span>following</div>
                   </div>
                   <div className="w-8/12 text-[15px] mt-2">
-                    {/* <ul>
-                      <li>🌸 Just a girl chasing sunsets & good vibes</li>
-                      <li>📷 Lover of photography, colors, and tiny details</li>
-                      <li>✨ Living one snapshot at a time</li>
-                      <li>💬 DM me for collabs & good coffee recs ☕💕</li>
-                    </ul> */}
                     {userInfo?.bio}
                   </div>
                 </div>
               </div>
 
               <div className="w-11/12">
-                <div className=" flex justify-center gap-5 items-center border-b border-stone-400 text-[15px]">
+                <div className=" flex justify-center gap-5 items-center border-b border-stone-300 text-[15px]">
                   <div className="cursor-pointer flex gap-1 items-center font-medium border-b px-2.5 pb-1.5">
                     <Grid3X3 size={18} />
                     Posts
@@ -97,12 +98,48 @@ export default function ProfilePage() {
                     {
                       posts.length > 0 
                       ? (
-                        posts?.map((post) => (
-                          <div key={post._id} className="p-2 my-2">
-                            <p>{post.content}</p>
-                            <p className="text-sm text-gray-500">{post.createdAt}</p>
+                        <div className="">
+                          {/* new post input */}
+                          <div className=' py-6 px-4  flex gap-4 w-full border-b border-stone-300'>
+                            <div className=' w-9 h-9 '>
+                                <div className=' w-full h-full border-2 border-stone-300 rounded-full bg-stone-300 text-white flex justify-center items-end overflow-hidden cursor-pointer ' >
+                                    <UserRound fill="white" strokeWidth={0} size={40} className='relative top-2' />
+                                </div>
+                            </div>
+                            <div className='w-11/12 items-start'>
+                                <div className='flex justify-between  w-full '>
+                                    {/* <input 
+                                        className=' w-10/12 border border-stone-300 px-3 py-1.5 rounded-xl '
+                                        onClick={() => setShowNewPost(true)} 
+                                        type="text" 
+                                        placeholder='Tell your friends about your thoughts...' 
+                                    /> */}
+                                    <div
+                                      onClick={() => setShowNewPost(true)} 
+                                      className=' w-10/12 border-stone-300 text-stone-500  py-1.5 rounded-xl '
+                                    >
+                                      Tell your friends about your thoughts...
+                                    </div>
+                                    <div
+                                        onClick={() => setShowNewPost(true)}  
+                                        className=' flex justify-center items-center gap-1.5  px-2 py-1.5 rounded-xl font-semibold bg-[#F27C3A] text-white '
+                                    >
+                                        Post <SendHorizonal size={17} className=""/> 
+                                    </div>
+                                    {
+                                        showNewPost && <NewPost setShowNewPost={setShowNewPost} />
+                                    }
+                                </div>
+                            </div>
                           </div>
-                        ))
+                          {/* posts */}
+                          {posts?.map((post) => (
+                            <div key={post._id} className="py-2 my-2 px-4 ">
+                              <p>{post.content}</p>
+                              <p className="text-sm text-gray-500">{post.createdAt}</p>
+                            </div>
+                          ))}
+                        </div>
                       ): (
                         <div className="h-70 w-full text-3xl font-semibold text-stone-500 flex flex-col justify-center items-center">
                           <div className="w-14 h-14 rounded-full border-3  flex justify-center items-center">
@@ -115,7 +152,7 @@ export default function ProfilePage() {
                   </div>
                 </div>
               </div>
-            </>
+            </div>
           )
           : (
             <Loader/>
