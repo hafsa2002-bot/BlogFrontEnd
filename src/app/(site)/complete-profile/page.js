@@ -4,7 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { useState, useEffect } from "react"
 import axios from "axios"
 
-export default function page() {
+export default function CompleteProfilePage() {
     const router = useRouter()
     const searchParams = useSearchParams()
     const id = searchParams.get('user')
