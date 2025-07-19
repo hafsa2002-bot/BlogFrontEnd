@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Loader from "@/components/Loader";
+import Image from "next/image";
 
 export default function Explore(){
     const {data: session, status} = useSession()
@@ -48,7 +49,7 @@ export default function Explore(){
         if (isLoggedIn || status === "loading") {
             router.push("/")
         }
-    }, [isLoggedIn, router])
+    }, [isLoggedIn, router, status])
 
     if (status === "loading" || isLoggedIn) return <Loader/>
 
@@ -66,27 +67,52 @@ export default function Explore(){
                     <ul className=" ">
                         <li className="hover:bg-[#F27C3A] px-3 py-1.5 rounded-lg" >
                             <Link href="/"  className="flex items-center gap-1.5 hover:underline" >
-                                {/* <Home/> */}
-                                <img className="w-6 h-6" src="/images/icons8-home-48.png" alt="home icon" />
+                                {/* <img className="w-6 h-6" src="/images/icons8-home-48.png" alt="home icon" /> */}
+                                <Image
+                                    src="/images/icons8-home-48.png"
+                                    width={24}
+                                    height={24}
+                                    alt="home icon"
+                                />
                                 Home
                             </Link>
                         </li>
                         <li className="hover:bg-[#F27C3A] px-3 py-1.5 rounded-lg">
                             <Link href="/" className="flex items-center gap-1.5  hover:underline" >
-                                {/* <Tag/> */}
-                                <img className="w-6 h-6" src="/images/icons8-label-emoji-48.png" alt="tags" />
+                                {/* <img className="w-6 h-6" src="/images/icons8-label-emoji-48.png" alt="tags" /> */}
+                                <Image 
+                                    // className="w-6 h-6" 
+                                    width={24}
+                                    height={24}
+                                    src="/images/icons8-label-emoji-48.png" 
+                                    alt="tags" 
+                                />
+                                
                                 Tags
                             </Link>
                         </li>
                         <li className="hover:bg-[#F27C3A] px-3 py-1.5 rounded-lg">
                             <Link href="/" className="flex items-center gap-1.5 hover:underline" >
-                                <img  className="w-6 h-6" src="/images/icons8-smiling-face-with-sunglasses-48.png"  alt="about"/>
+                                {/* <img  className="w-6 h-6" src="/images/icons8-smiling-face-with-sunglasses-48.png"  alt="about"/> */}
+                                <Image  
+                                    // className="w-6 h-6"
+                                    width={24}
+                                    height={24} 
+                                    src="/images/icons8-smiling-face-with-sunglasses-48.png"  
+                                    alt="about"
+                                />
                                 About
                             </Link>
                         </li>
                         <li className="hover:bg-[#F27C3A] px-3 py-1.5 rounded-lg">
                             <Link href="/" className="flex items-center gap-1.5 hover:underline" >
-                                <img className="w-6 h-6" src="/images/icons8-open-mailbox-with-raised-flag-48.png" alt="contact" />
+                                {/* <img className="w-6 h-6" src="/images/icons8-open-mailbox-with-raised-flag-48.png" alt="contact" /> */}
+                                <Image
+                                    width={24}
+                                    height={24} 
+                                    src="/images/icons8-open-mailbox-with-raised-flag-48.png" 
+                                    alt="contact" 
+                                />
                                 Contact
                             </Link>
                         </li>

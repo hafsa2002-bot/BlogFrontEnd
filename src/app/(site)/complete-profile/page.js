@@ -67,7 +67,7 @@ export default function CompleteProfilePage() {
     <div className="bg-[#F27C3A]/30 w-full h-screen flex justify-center items-center ">
         <div className="bg-white shadow-xl w-6/12 rounded-2xl border border-stone-400 px-10 py-7">
             <h2 className="text-3xl font-extrabold mb-1">Build your profile</h2>
-            <p className="text-lg w-11/12 ">Tell us a little about yourself - This is how others will see you. You'll always be able to edit this later in your Settings.</p>
+            <p className="text-lg w-11/12 ">Tell us a little about yourself - This is how others will see you. You&apos;ll always be able to edit this later in your Settings.</p>
 
             {error && 
                 <div className="fixed top-2 right-1/2 translate-x-1/2 w-fit font-semibold z-50 bg-red-500 text-white  text-sm py-1.5 px-3 rounded-md mt-2 flex justify-center items-center gap-1 transition-opacity duration-300">

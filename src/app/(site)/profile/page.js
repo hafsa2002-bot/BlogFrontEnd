@@ -7,6 +7,7 @@ import axios from "axios"
 import { Bookmark, BookMarked, Grid3X3, NotebookPen, SendHorizonal, Settings, User2, UserRound } from "lucide-react"
 import {useSession} from "next-auth/react"
 import { useEffect, useState } from "react"
+import Image from "next/image";
 
 export default function ProfilePage() {
   const [posts, setPosts] = useState([])
@@ -46,7 +47,8 @@ export default function ProfilePage() {
                     userInfo?.profileImage 
                     ? (
                       <div className="w-28 h-28 bg-stone-300 rounded-full border border-stone-400 overflow-hidden">
-                        <img src={`${userInfo?.profileImage}`} alt="profile image" />
+                        {/* <img src={`${userInfo?.profileImage}`} alt="profile image" /> */}
+                        <Image src={`${userInfo?.profileImage}`} alt="profile image" />
                       </div>
                     ):(
                       // <div className="w-34 h-34 bg-stone-200 flex justify-center items-center rounded-full border border-stone-400 overflow-hidden">

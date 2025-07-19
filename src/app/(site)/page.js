@@ -71,7 +71,8 @@ export default function Home() {
                 </Link>
             </div>
             <div className="min-h-[90vh] w-1/3 absolute z-10 right-0 bottom-5">
-                <img className="h-full w-full" src="/images/heroSectionPhoto.png" />
+                {/* <img className="h-full w-full" src="/images/heroSectionPhoto.png" /> */}
+                <Image className="h-full w-full" src="/images/heroSectionPhoto.png" alt="hero Section Photo" />
             </div>
         </section>
     </div>
