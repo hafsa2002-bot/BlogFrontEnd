@@ -9,6 +9,7 @@ import { useSession } from "next-auth/react";
 import SideBar from "@/components/User/SideBar";
 import ExplorePosts from "@/components/ExplorePosts";
 import Loader from "@/components/Loader";
+import { Plus } from "lucide-react";
 
 export default function RootLayout({ children }) {
   const pathname = usePathname()
@@ -29,8 +30,15 @@ export default function RootLayout({ children }) {
             </div>
             {/* <div className='w-[20%]'>
             </div> */}
+            <div 
+                className="bg-white group rounded-2xl cursor-pointer shadow-xl border border-stone-200 text-stone-800 fixed bottom-7 right-7 w-18 h-12 flex justify-center items-center"
+            >
+                <Plus size={30} />
+                <div className="absolute  top-9 left-7  hidden group-hover:block bg-white border border-black text-black px-2 py-1  text-sm">
+                    Create
+                </div>
+            </div>
         </div>
-        <Footer />
     </div>
   );
 }

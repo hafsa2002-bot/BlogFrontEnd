@@ -6,18 +6,20 @@ import { auth } from "@/auth";
 // import { authOptions } from "@/auth";
 
 // get all posts
-/*
+
 export const GET = async() => {
     try{
         await connect()
-        const posts = await Post.find()
+        const posts = await Post.find().sort({createdAt: -1})
         console.log("posts: ", posts)
         return new NextResponse(JSON.stringify(posts), {status: 200})
     }catch(error){
         return new NextResponse("Error in fetching posts" + error.message, {status: 500})
     }
 }
-    */
+
+
+/*
 export const GET = async () => {
     try{
         // const session = await getServerSession(authOptions, req)
@@ -26,7 +28,7 @@ export const GET = async () => {
             return new NextResponse("Unauthorized", {status: 401})
         }
         await connect();
-        const posts = await Post.find({author: session.user.id})
+        const posts = await Post.find({author: session.user.id}).sort({createdAt: -1})
         return new NextResponse(JSON.stringify(posts), {status: 200})
     }catch(error){
         console.error("POST ERROR:", error);
@@ -35,6 +37,8 @@ export const GET = async () => {
         })
     }
 }
+
+*/
 
 // add post
 /*

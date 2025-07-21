@@ -4,6 +4,7 @@ import Link from "next/link";
 import HomePage from "@/components/HomePage";
 import { useSession } from "next-auth/react";
 import Loader from "@/components/Loader";
+import Footer from "@/components/Footer";
 
 export default function Home() {
     // const session = await auth()
@@ -72,9 +73,10 @@ export default function Home() {
             </div>
             <div className="min-h-[90vh] w-1/3 absolute z-10 right-0 bottom-5">
                 {/* <img className="h-full w-full" src="/images/heroSectionPhoto.png" /> */}
-                <Image className="h-full w-full" src="/images/heroSectionPhoto.png" alt="hero Section Photo" />
+                <Image fill className="h-full w-full" src="/images/heroSectionPhoto.png" alt="hero Section Photo" />
             </div>
         </section>
+        <Footer />
     </div>
   )
 }

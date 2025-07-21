@@ -8,6 +8,7 @@ import { Bookmark, BookMarked, Grid3X3, NotebookPen, SendHorizonal, Settings, Us
 import {useSession} from "next-auth/react"
 import { useEffect, useState } from "react"
 import Image from "next/image";
+import Post from "@/components/User/Post"
 
 export default function ProfilePage() {
   const [posts, setPosts] = useState([])
@@ -22,7 +23,7 @@ export default function ProfilePage() {
       .catch(err => console.log("Error: ", err))
   }
   const fetchUserPosts = () => {
-    axios.get("/api/posts")
+    axios.get(`/api/posts/${session?.user?.id}`)
       .then(response => setPosts(response.data))
       .catch(error => console.log("Error: ", error))
       .finally(() => setLoading(false))
@@ -36,7 +37,7 @@ export default function ProfilePage() {
   // if(status === "loading" || loading) return <Loader/>
   if(!session) return <p>You must be logged in</p>
   return (
-    <div className="bg-white px-7 py-5 rounded-2xl w-10/12">
+    <div className="bg-white px-7 pt-5 mb-10 rounded-2xl w-10/12">
         {
           !loading
           ? (
@@ -48,7 +49,7 @@ export default function ProfilePage() {
                     ? (
                       <div className="w-28 h-28 bg-stone-300 rounded-full border border-stone-400 overflow-hidden">
                         {/* <img src={`${userInfo?.profileImage}`} alt="profile image" /> */}
-                        <Image src={`${userInfo?.profileImage}`} alt="profile image" />
+                        <Image src={`${userInfo?.profileImage}`} width={112} height={112} alt="profile image" className="object-cover" unoptimized />
                       </div>
                     ):(
                       // <div className="w-34 h-34 bg-stone-200 flex justify-center items-center rounded-full border border-stone-400 overflow-hidden">
@@ -103,19 +104,22 @@ export default function ProfilePage() {
                         <div className="">
                           {/* new post input */}
                           <div className=' py-6 px-4  flex gap-4 w-full border-b border-stone-300'>
-                            <div className=' w-9 h-9 '>
-                                <div className=' w-full h-full border-2 border-stone-300 rounded-full bg-stone-300 text-white flex justify-center items-end overflow-hidden cursor-pointer ' >
-                                    <UserRound fill="white" strokeWidth={0} size={40} className='relative top-2' />
-                                </div>
+                            <div className=' w-9 h-9 relative flex justify-center items-center'>
+                              {
+                                userInfo?.profileImage
+                                ? (
+                                  <div className='w-full h-full border border-stone-300 rounded-full  flex justify-center items-center overflow-hidden cursor-pointer ' >
+                                      <Image src={`${userInfo?.profileImage}`} width={36} height={36} alt='profile image' className='object-cover' unoptimized />
+                                  </div>
+                                ):(
+                                  <div className=' w-full h-full border-2 border-stone-300 rounded-full bg-stone-300 text-white flex justify-center items-end overflow-hidden cursor-pointer ' >
+                                      <UserRound fill="white" strokeWidth={0} size={40} className='relative top-2' />
+                                  </div>
+                                )
+                              }
                             </div>
                             <div className='w-11/12 items-start'>
                                 <div className='flex justify-between  w-full '>
-                                    {/* <input 
-                                        className=' w-10/12 border border-stone-300 px-3 py-1.5 rounded-xl '
-                                        onClick={() => setShowNewPost(true)} 
-                                        type="text" 
-                                        placeholder='Tell your friends about your thoughts...' 
-                                    /> */}
                                     <div
                                       onClick={() => setShowNewPost(true)} 
                                       className=' w-10/12 border-stone-300 text-stone-500  py-1.5 rounded-xl '
@@ -134,12 +138,10 @@ export default function ProfilePage() {
                                 </div>
                             </div>
                           </div>
+
                           {/* posts */}
-                          {posts?.map((post) => (
-                            <div key={post._id} className="py-2 my-2 px-4 ">
-                              <p>{post.content}</p>
-                              <p className="text-sm text-gray-500">{post.createdAt}</p>
-                            </div>
+                          {posts?.map((post, index) => (
+                            <Post post={post} key={index}  index={index} length={posts.length } />
                           ))}
                         </div>
                       ): (

@@ -4,7 +4,7 @@ import EmailInput from "@/components/EmailInput"
 import PasswordInput from "@/components/PasswordInput"
 import Link from "next/link"
 import styled from "styled-components"
-import { login } from "../../../../lib/actions/auth"
+import { login } from "../../../lib/actions/auth"
 import { X } from "lucide-react"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
@@ -43,7 +43,9 @@ export default function Login() {
                 <div className='w-10'>
                     {/* <img className='w-full' src="/images/logo4.png" /> */}
                     <Image 
-                        className='w-full' 
+                        // className='w-full'
+                        width={40} 
+                        height={40}
                         src="/images/logo4.png"
                         alt="logo" 
                     />
@@ -91,7 +93,9 @@ export default function Login() {
         <div className="w-1/2 p-3">
             <div className="bg-white rounded-tr-xl rounded-br-xl rounded-tl-lg rounded-bl-[80px] h-full flex flex-col justify-center items-center">
                 {/* <img className="w-1/2 rotate-12" src="/images/09d24e63-a074-42b3-82ab-5d684666aae4.png"  /> */}
-                <Image className="w-1/2 rotate-12" src="/images/09d24e63-a074-42b3-82ab-5d684666aae4.png" alt="login photo"  />
+                <div className="w-1/2 relative aspect-[1/1]">
+                    <Image className="object-contain rotate-12" fill src="/images/09d24e63-a074-42b3-82ab-5d684666aae4.png" alt="login photo"  />
+                </div>
                 <h1 className="font-semibold text-3xl mt-2">Your Creative Corner Awaits</h1>
                 <p className="text-stone-600 text-lg mt-4  w-1/2 text-center">Start writing, exploring, and connecting through your words.</p>
             </div>

@@ -6,7 +6,10 @@ export const GET = async (req, {params}) => {
     try{
         await connect()
         const { id } = await params
-        const post = await Post.findById(id)
+        // const post = await Post.find({author: id}).sort({createdAt: -1})
+        const post = await Post.find({author: id})
+        .populate('author', 'username bio profileImage followers')
+        .sort({createdAt: -1})
 
         if(!post){
             return new NextResponse("Post not found", {status: 404})

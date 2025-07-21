@@ -3,6 +3,7 @@ import { User2 } from "lucide-react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useState, useEffect } from "react"
 import axios from "axios"
+import Image from "next/image"
 
 export default function CompleteProfilePage() {
     const router = useRouter()
@@ -76,20 +77,38 @@ export default function CompleteProfilePage() {
             }
 
             <form onSubmit={handleCompleteProfile} className="mt-5 flex flex-col justify-center gap-3 w-full">
-                <div className="flex gap-5">
-                    <div className="bg-stone-200 w-16 h-16 flex justify-center items-center rounded-full overflow-hidden border border-stone-400">
-                        <User2 size={60} strokeWidth={0} fill="gray" className="relative top-3" />
-                    </div>
-                    <div>
+                <div className="flex gap-5 items-center">
+                    {
+                        file
+                        ? (
+                            <Image
+                                width={64}
+                                height={64}
+                                src={URL.createObjectURL(file)}
+                                alt="prview"
+                                className="rounded-full object-cover border border-stone-400"
+                            />
+                        ):(
+                            <div className="bg-stone-200 w-16 h-16 flex justify-center items-center rounded-full overflow-hidden border border-stone-400">
+                                <User2 size={60} strokeWidth={0} fill="gray" className="relative top-3" />
+                            </div>
+                        )
+                    }
+                    <div className="">
                         <div className="text-lg text-black pb-1">{userInfo?.email}</div>
-                        <div className="bg-[#F27C3A] flex justify-center items-center  rounded-lg p-0.5">
-                            <label htmlFor="profileImage" className="bg-[#F27C3A] cursor-pointer text-white rounded-lg p-1.5 border-2 border-white  font-semibold  text-sm ">Edit profile image</label>
+                        <div className="bg-[#F27C3A] flex justify-center items-center  outline-none rounded-lg p-0.5">
+                            <label htmlFor="profileImage" className="bg-[#F27C3A] outline-none cursor-pointer text-white rounded-lg p-1.5 border-2 border-white  font-semibold  text-sm ">Edit profile image</label>
                         </div>
                         <input 
                             id="profileImage" 
                             name="profileImage" 
                             type="file" 
-                            className="hidden py-1.5" 
+                            className="hidden py-1.5 outline-0"
+                            onChange={(e) => {
+                                if(e.target.files && e.target.files[0]){
+                                    setFile(e.target.files[0])
+                                }
+                            }} 
                         />
                     </div>
                 </div>
