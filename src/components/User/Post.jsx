@@ -99,8 +99,8 @@ function Post({post, index, length}) {
             </div>
             <div>
                 {/* content */}
-                <Link href={`/post/${post._id}`}className='border'>
-                    <p className="whitespace-pre-line border">{post?.content} </p>
+                <Link href={`/post/${post._id}`} className=''>
+                    <p className="whitespace-pre-line ">{post?.content} </p>
                 </Link>
 
                 {/* photo if it exist */}

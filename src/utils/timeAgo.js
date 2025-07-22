@@ -3,6 +3,9 @@ import {differenceInSeconds, differenceInMinutes, differenceInHours, differenceI
 export function getShortTimeAgo (date) {
     const now  = new Date();
     const targetDate = new Date(date);
+    if (isNaN(targetDate.getTime())) {
+        return "Invalid date"; // Or return null or a fallback message
+    }
     const formattedDate = format(targetDate, 'dd/MM/yyyy')
     const seconds = differenceInSeconds(now, targetDate)
     const minutes = differenceInMinutes(now, targetDate);
