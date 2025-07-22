@@ -76,7 +76,7 @@ export default function ProfilePage() {
                     <div className="text-stone-500 flex gap-1.5 cursor-pointer"><span className="text-black font-semibold">{userInfo?.followers?.length}</span>followers</div>
                     <div className="text-stone-500 flex gap-1.5 cursor-pointer"><span className="text-black font-semibold">{userInfo?.following?.length}</span>following</div>
                   </div>
-                  <div className="w-8/12 text-[15px] mt-2">
+                  <div className="w-8/12 text-[15px] mt-2 whitespace-pre-line">
                     {userInfo?.bio}
                   </div>
                 </div>

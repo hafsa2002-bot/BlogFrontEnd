@@ -1,15 +1,22 @@
-import { Heart, MessageCircle, Plus, UserRound } from 'lucide-react'
+import { ArrowRight, Bookmark, Ellipsis, Heart, MessageCircle, PenLine, Plus, Trash2, UserRound } from 'lucide-react'
 import React, {useState} from 'react'
 import { useSession } from 'next-auth/react'
 import ProfileOverview from '../ProfileOverview'
 import Image from 'next/image'
+import {getShortTimeAgo} from '@/utils/timeAgo'
+import DeletePost from './DeletePost'
+import Link from 'next/link'
 
 function Post({post, index, length}) {
     const [showProfile, setShowProfile] = useState(null)
     const [showAbove, setShowAbove] = useState(false)
     const [showNewPost, setShowNewPost] = useState(false)
+    const [showPostOptions, setShowPostOptions] = useState(false)
+    const [deletePostPopUp, setDeletePostPopUp] = useState(false)
     const {data: session, status} = useSession()
     const isLoggedIn = session?.user
+
+    
   return (
     <div className={`  pl-4 pr-4 py-4  flex gap-4 cursor-pointer ${index !== length-1 && 'border-b border-stone-300'}`}>
         <div className=' relative w-9 h-9 flex justif-center items-center'>
@@ -34,29 +41,68 @@ function Post({post, index, length}) {
             }
         </div>
         <div className='w-11/12'>
-            <div className='flex items-center gap-1.5'>
-                <div 
-                    className='relative font-semibold hover:underline cursor-pointer'
-                    onMouseEnter={(e) =>{
-                        const x = e.currentTarget.getBoundingClientRect()
-                        const spaceBelow = window.innerHeight - x.bottom
-                        setShowAbove(spaceBelow < 200)
-                        setShowProfile(index)
-                    }}
-                    onMouseLeave={() => setShowProfile(null)}
-                >
-                    {post?.author?.username}
+            <div className='flex justify-between items-center'>
+                <div className='flex items-center gap-1.5'>
+                    <div 
+                        className='relative font-semibold hover:underline cursor-pointer'
+                        onMouseEnter={(e) =>{
+                            const x = e.currentTarget.getBoundingClientRect()
+                            const spaceBelow = window.innerHeight - x.bottom
+                            setShowAbove(spaceBelow < 200)
+                            setShowProfile(index)
+                        }}
+                        onMouseLeave={() => setShowProfile(null)}
+                    >
+                        {post?.author?.username}
+                        {
+                            showProfile === index && 
+                                <ProfileOverview showAbove={showAbove} author={post.author} />
+                        }
+                    </div>
+                    {/* post time */}
+                    <p className='text-stone-400'>
+                        { getShortTimeAgo(new Date(post?.createdAt)) }
+                    </p>
+                </div>
+                {/* post options : save, delete */}
+                <div>
+                    <div
+                        onClick={() => setShowPostOptions(!showPostOptions)} 
+                        className='relative w-8 h-8 hover:bg-stone-100 rounded-full flex justify-center items-center'
+                    >
+                        <Ellipsis size={20} className='text-stone-600' />
+                        {  
+                            showPostOptions && 
+                            <div className='absolute top-7 right-1 z-50 w-38 bg-white rounded-md border border-stone-300 text-black overflow-hidden'>
+                                <div className='border-b  border-stone-300 p-1 font-medium '>
+                                    <div className='hover:bg-stone-100 p-2 rounded-lg flex items-center justify-between'>Save <Bookmark size={21} /></div>
+                                </div>
+                                <div className='border-b border-stone-300 p-1 font-medium '>
+                                    <div className='hover:bg-stone-100 p-2 rounded-lg flex items-center justify-between'>Edit <PenLine size={21}/></div>
+                                </div>
+                                <div className='border-b border-stone-300 p-1 font-medium '>
+                                    <div className='hover:bg-stone-100 p-2 rounded-lg flex items-center justify-between'>Go to Post <ArrowRight size={21}/></div>
+                                </div>
+                                <div
+                                    onClick={() => setDeletePostPopUp(true)} 
+                                    className='p-1 font-medium text-red-500'
+                                >
+                                    <div className='hover:bg-stone-100 p-2 rounded-lg flex items-center justify-between'>Delete <Trash2 size={21}/></div>
+                                </div>
+                            </div>
+                        }
+                    </div>
                     {
-                        showProfile === index && 
-                            <ProfileOverview showAbove={showAbove} author={post.author} />
+                        deletePostPopUp && <DeletePost postId={post._id} setDeletePostPopUp={setDeletePostPopUp}  />
                     }
                 </div>
-                <p className='text-stone-400'>11 h</p>
             </div>
             <div>
                 {/* content */}
-                <p>{post?.content} </p>
-                
+                <Link href={`/post/${post._id}`}className='border'>
+                    <p className="whitespace-pre-line border">{post?.content} </p>
+                </Link>
+
                 {/* photo if it exist */}
                 {
                     post.image && 
@@ -85,10 +131,8 @@ function Post({post, index, length}) {
                         : post?.comments?.length > 1 ? <p>{post?.comments?.length} comments</p>
                         : null
                     }
-                    {/* <p className='text-sm'>{post?.comments?.length > 0 && post.comments.length}</p> */}
                 </div>
             </div>
-
         </div>
     </div>
   )
