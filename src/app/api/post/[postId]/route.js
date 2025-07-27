@@ -7,6 +7,8 @@ export async function GET(request, {params}){
         const {postId} = await params
     
         const post = await Post.find({_id: postId})
+        .populate('author', 'username bio profileImage followers')
+        
         if(!post){
             return new NextResponse("post not found", {status: 404})
         }

@@ -141,7 +141,9 @@ export default function ProfilePage() {
 
                           {/* posts */}
                           {posts?.map((post, index) => (
-                            <Post post={post} key={index}  index={index} length={posts.length } />
+                            <div className={`pl-4 pr-4 ${index !== posts.length-1 && 'border-b border-stone-300'}`}>
+                              <Post post={post} key={index}  index={index} length={posts.length } />
+                            </div>
                           ))}
                         </div>
                       ): (
