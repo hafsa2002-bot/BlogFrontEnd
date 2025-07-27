@@ -19,15 +19,6 @@ export default function PostPage() {
     const [post, setPost] = useState("")
     const [comments, setComments] = useState([])
     const [loading, setLoading] = useState(true)
-
-    const fetchPostInfo = () => {
-        setLoading(true)
-        axios.get(`/api/post/${id}`)
-            .then(res => setPost(res.data[0]))
-            .catch(error => console.log("Error: ", error))
-            .finally(() => setLoading(false))
-    }
-
     const fetchComments = (postId) => {
         axios.get(`/api/post/${postId}/comment`)
             .then(res => {
@@ -39,6 +30,14 @@ export default function PostPage() {
     }
 
     useEffect(() => {
+        const fetchPostInfo = () => {
+            setLoading(true)
+            axios.get(`/api/post/${id}`)
+                .then(res => setPost(res.data[0]))
+                .catch(error => console.log("Error: ", error))
+                .finally(() => setLoading(false))
+        }
+
         if(id){
             fetchPostInfo()
             fetchComments(id)

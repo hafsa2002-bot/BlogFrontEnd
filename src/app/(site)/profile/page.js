@@ -17,22 +17,24 @@ export default function ProfilePage() {
   const {data: session, status} = useSession()
   const [showNewPost, setShowNewPost] = useState(false)
 
-  const fetchUserInfo = async () => {
-    axios.get("/api/users/me")
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      axios.get("/api/users/me")
       .then(response => setUserInfo(response.data))
       .catch(err => console.log("Error: ", err))
-  }
-  const fetchUserPosts = () => {
-    axios.get(`/api/posts/${session?.user?.id}`)
-      .then(response => setPosts(response.data))
-      .catch(error => console.log("Error: ", error))
-      .finally(() => setLoading(false))
-  }
-  useEffect(() => {
+    }
+
+    const fetchUserPosts = () => {
+      axios.get(`/api/posts/${session?.user?.id}`)
+        .then(response => setPosts(response.data))
+        .catch(error => console.log("Error: ", error))
+        .finally(() => setLoading(false))
+    }
+
     fetchUserInfo()
     fetchUserPosts()
     // console.log("session: ", session)
-  }, [])
+  }, [session?.user?.id])
 
   // if(status === "loading" || loading) return <Loader/>
   if(!session) return <p>You must be logged in</p>
@@ -141,7 +143,7 @@ export default function ProfilePage() {
 
                           {/* posts */}
                           {posts?.map((post, index) => (
-                            <div className={`pl-4 pr-4 ${index !== posts.length-1 && 'border-b border-stone-300'}`}>
+                            <div key={index} className={`pl-4 pr-4 ${index !== posts.length-1 && 'border-b border-stone-300'}`}>
                               <Post post={post} key={index}  index={index} length={posts.length } />
                             </div>
                           ))}
