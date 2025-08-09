@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 import SideBar from "@/components/User/SideBar";
-import ExplorePosts from "@/components/ExplorePosts";
+// import ExplorePosts from "@/components/ExplorePosts";
 import Loader from "@/components/Loader";
 import { Plus } from "lucide-react";
 

@@ -1,5 +1,5 @@
 import { ArrowRight, Bookmark, Ellipsis, Heart, MessageCircle, PenLine, Plus, Send, Share, Trash2, UserRound } from 'lucide-react'
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { useSession } from 'next-auth/react'
 import ProfileOverview from '../ProfileOverview'
 import Image from 'next/image'
@@ -8,8 +8,12 @@ import DeletePost from './DeletePost'
 import Link from 'next/link'
 import Like from './Like'
 import Comment from './Comment'
+import EditPost from './EditPost'
+import SavePost from './SavePost'
+import SuccessMessage from '../SuccessMessage'
+import { getCurrentUser } from '@/utils/getCurrentUser'
 
-function Post({post, index, length}) {
+function Post({post, index, length, onPostDeleted}) {
     const [showProfile, setShowProfile] = useState(null)
     const [showAbove, setShowAbove] = useState(false)
     const [showNewPost, setShowNewPost] = useState(false)
@@ -19,12 +23,29 @@ function Post({post, index, length}) {
     const [comments, setComments] = useState(post?.comments)
     const {data: session, status} = useSession()
     const isLoggedIn = session?.user
-
-    
+    const [editPostPopUp, setEditPostPopUp] = useState(false)
+    const postDate = new Date(post?.createdAt)
+    const now = new Date()
+    const twentyFourHrs = 24 * 60 * 60 * 1000
+    const timeDiff = now - postDate
+    const isEditable = timeDiff < twentyFourHrs
+    const [successMessage, setSuccessMessage] = useState("")
+    // const [errorMessage, setErrorMessage] = useState("")
+    const [isSaved, setIsSaved] = useState(false)
+    useEffect(() => {
+        const fetchUser = async () => {
+            const user = await getCurrentUser();
+            if (user && user.savedPosts?.includes(post?._id)) {
+                setIsSaved(true);
+            }
+            // setLoadingUser(false)
+        };
+        fetchUser();
+    }, [post?._id]);
   return (
     <div className="">
         <div className={` py-4  flex gap-3 cursor-pointer `}>
-            <div className=' relative w-9 h-9 flex justif-center items-center'>
+            <div className='relative w-9 h-9 flex justif-center items-center'>
                 {
                     post?.author?.profileImage
                     ? (
@@ -39,7 +60,7 @@ function Post({post, index, length}) {
                 }
                 {
                     session?.user?.id !== post?.author?._id && (
-                        <div className='absolute z-40 bg-[#F27C3A] text-white w-5 h-5 border-2 border-white rounded-full -bottom-1 -right-1 flex justify-center items-center'>
+                        <div className='absolute z-30 bg-[#F27C3A] text-white w-5 h-5 border-2 border-white rounded-full -bottom-1 -right-1 flex justify-center items-center'>
                             <Plus size={10} />
                         </div>
                     )
@@ -58,7 +79,7 @@ function Post({post, index, length}) {
                             }}
                             onMouseLeave={() => setShowProfile(null)}
                         >
-                            {post?.author?.username}
+                            <Link  href={`/${post?.author?._id}`}>{post?.author?.username}</Link>
                             {
                                 showProfile === index && 
                                     <ProfileOverview showAbove={showAbove} author={post.author} />
@@ -78,27 +99,68 @@ function Post({post, index, length}) {
                             <Ellipsis size={20} className='text-stone-600' />
                             {  
                                 showPostOptions && 
-                                <div className='absolute top-7 right-1 z-50 w-38 bg-white rounded-md border border-stone-300 text-black overflow-hidden'>
+                                <div className='absolute top-7 right-1 z-50 w-38 bg-white rounded-xl border border-stone-300 text-black overflow-hidden'>
                                     <div className='border-b  border-stone-300 p-1 font-medium '>
-                                        <div className='hover:bg-stone-100 p-2 rounded-lg flex items-center justify-between'>Save <Bookmark size={21} /></div>
+                                        <SavePost 
+                                            postId={post?._id} 
+                                            // initiallySaved={post?.savedByCurrentUser}  
+                                            setSuccessMessage={setSuccessMessage}
+                                            isSaved={isSaved}
+                                            setIsSaved={setIsSaved}
+                                        />
                                     </div>
+                                    {
+                                        (session?.user?.id === post?.author?._id && isEditable)
+                                        ? (
+                                            <div
+                                                onClick={() => setEditPostPopUp(true)} 
+                                                className='border-b border-stone-300 p-1 font-medium '
+                                            >
+                                                <div className='hover:bg-stone-100 p-2 rounded-lg flex items-center justify-between'>
+                                                    Edit <PenLine size={21}/>
+                                                </div>
+                                            </div>
+                                        ): (session?.user?.id === post?.author?._id && !isEditable) ?(
+                                            <div className='border-b border-stone-300 p-1 font-medium '>
+                                                <div className='hover:bg-stone-100 text-gray-400 p-2 rounded-lg flex items-center justify-between'>
+                                                    {/* Edit <PenLine size={21}/> */}
+                                                    {/* Editing disabled after 24 hours  */}
+                                                    Edit limit: 24h
+                                                </div>
+                                            </div>
+                                        ) : null
+                                    }
                                     <div className='border-b border-stone-300 p-1 font-medium '>
-                                        <div className='hover:bg-stone-100 p-2 rounded-lg flex items-center justify-between'>Edit <PenLine size={21}/></div>
+                                        <Link href={`/post/${post._id}`} className='hover:bg-stone-100 p-2 rounded-lg flex items-center justify-between'>
+                                            Go to Post <ArrowRight size={21}/>
+                                        </Link>
                                     </div>
-                                    <div className='border-b border-stone-300 p-1 font-medium '>
-                                        <div className='hover:bg-stone-100 p-2 rounded-lg flex items-center justify-between'>Go to Post <ArrowRight size={21}/></div>
-                                    </div>
-                                    <div
-                                        onClick={() => setDeletePostPopUp(true)} 
-                                        className='p-1 font-medium text-red-500'
-                                    >
-                                        <div className='hover:bg-stone-100 p-2 rounded-lg flex items-center justify-between'>Delete <Trash2 size={21}/></div>
-                                    </div>
+                                    {
+                                        session?.user?.id === post?.author?._id && (
+                                            <div
+                                                onClick={() => setDeletePostPopUp(true)} 
+                                                className='p-1 font-medium text-red-500'
+                                            >
+                                                <div className='hover:bg-stone-100 p-2 rounded-lg flex items-center justify-between'>
+                                                    Delete <Trash2 size={21}/>
+                                                </div>
+                                            </div>
+                                        )
+                                    }
                                 </div>
                             }
                         </div>
                         {
-                            deletePostPopUp && <DeletePost postId={post._id} setDeletePostPopUp={setDeletePostPopUp}  />
+                            deletePostPopUp && <DeletePost postId={post._id} setDeletePostPopUp={setDeletePostPopUp} onPostDeleted={onPostDeleted}  />
+                        }
+                        {editPostPopUp && 
+                            <EditPost 
+                                postId={post?._id} 
+                                // setPost={setPost} 
+                                content={post?.content} 
+                                setEditPostPopUp={setEditPostPopUp} 
+                                author={post?.author}
+                            />
                         }
                     </div>
                 </div>
@@ -110,26 +172,24 @@ function Post({post, index, length}) {
 
                     {/* photo if it exist */}
                     {
-                        post.image && 
-                            <img 
-                                src={`${post.image}`} 
-                                alt={post.title} 
-                                className='max-h-[430px] max-w-[530px] mt-4 rounded-xl border border-stone-300'
-                            />
+                        (post.images && post.images.length > 0) && 
+                            <div className='flex items-center gap-2 overflow-x-scroll'>
+                                {
+                                    post.images?.map((img, index) => (
+                                        <img
+                                            key={index} 
+                                            src={`${img}`} 
+                                            alt={post.title} 
+                                            className='max-h-[430px] max-w-[530px] mt-4 rounded-xl border border-stone-300'
+                                        />
+                                    ))
+                                }
+                            </div>
                     }
                     
                 </div>
-                <div className='flex gap-1 items-center mt-2 relative right-2 text-stone-700'>
-                    <div className='flex gap-1 text-sm justify-center items-center hover:bg-stone-100 cursor-pointer rounded-full'>
-                        {/* <Heart size={20} />
-                        {
-                            post?.likes?.length === 1 ? <p>{post?.likes?.length} like</p>
-                            : post?.likes?.length > 1 ? <p>{post?.likes?.length} likes</p>
-                            : null
-                        } */}
-                        <Like postId={post?._id} initialLikes={post?.likes} currentUserId={session?.user?.id} />
-                        
-                    </div>
+                <div className='flex gap-1 items-center mt-2 -ml-2 text-stone-700'>
+                    <Like postId={post?._id} initialLikes={post?.likes} currentUserId={session?.user?.id} />
                     <div className='flex gap-1 text-sm  justify-center items-center hover:bg-stone-100 cursor-pointer p-2 rounded-full'>
                         <MessageCircle
                             onClick={() => setShowComment(!showComment)} 
@@ -155,6 +215,9 @@ function Post({post, index, length}) {
                     />
                 </div>
             )
+        }
+        {
+            successMessage && <SuccessMessage message={successMessage}/>
         }
     </div>
   )

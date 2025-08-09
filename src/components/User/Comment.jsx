@@ -4,6 +4,7 @@ import Unknown from '../Unknown'
 import Image from 'next/image'
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
+import Link from 'next/link'
 
 function Comment({author, postId, comments, setComments}) {
   const [comment, setComment] = useState("")
@@ -31,13 +32,13 @@ function Comment({author, postId, comments, setComments}) {
       const res = await axios.post(`/api/post/${postId}/comment`, {
         content: comment
       })
-      setComments([...comments, {
+      setComments([{
         ...res.data,
         author: {
           username: userInfo?.username,
           profileImage: userInfo?.profileImage
         }
-      }])
+      }, ...comments])
       setComment("")
       console.log("comment added : ", res.data)
     }catch(error){
@@ -75,7 +76,7 @@ function Comment({author, postId, comments, setComments}) {
             </div>
             <form onSubmit={handleSubmit} className="w-11/12 flex justify-between items-end">
               <div className='w-10/12'>
-                <h3 className='font-semibold'>{userInfo?.username}</h3>
+                <Link  href={`/${userInfo?._id}`} className='font-semibold'>{userInfo?.username}</Link>
                 <input
                   type="text"
                   name="comment"

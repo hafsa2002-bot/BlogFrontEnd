@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import Unknown from '../Unknown'
 import axios from 'axios'
 import MiniSpinner from '../MiniSpinner'
+import Link from 'next/link'
 
 function LikesListPopup({postId, setShowLikedUsers}) {
     const [likedUsers, setLikedUsers] = useState([])
@@ -55,7 +56,9 @@ function LikesListPopup({postId, setShowLikedUsers}) {
                                             }
                                         </div>
                                         <div className='text-sm font-semibold'>
-                                            <h3>{user?.username || ''}</h3>
+                                            <Link href={`/${user?._id}`} className='hover:underline'>
+                                                {user?.username || ''}
+                                            </Link>
                                         </div>
                                     </div>
                                     <div className='text-center text-white p-1.5 rounded-xl bg-[#F27C3A] font-semibold '>

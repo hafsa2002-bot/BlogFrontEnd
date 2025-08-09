@@ -1,15 +1,21 @@
 'use client'
-import { Facebook, Github, Home, Instagram, Plus, Tag, Twitch, Twitter } from "lucide-react";
+import { Facebook, Github, Home, Instagram, Plus, SendHorizonal, Tag, Twitch, Twitter, UserRound } from "lucide-react";
 import Link from "next/link";
-import ExplorePosts from "@/components/ExplorePosts";
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Loader from "@/components/Loader";
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
+import Post from "@/components/User/Post";
+import MiniSpinner from "@/components/MiniSpinner";
+import NewPost from "@/components/User/NewPost";
+import axios from 'axios'
 
 export default function Explore(){
+    const [showNewPost, setShowNewPost] = useState(false)
+    const [posts, setPosts] = useState([])
+    const [loading, setLoading] = useState(true)
     const {data: session, status} = useSession()
     const isLoggedIn = session?.user
     const router = useRouter()
@@ -51,6 +57,13 @@ export default function Explore(){
             router.push("/")
         }
     }, [isLoggedIn, router, status])
+
+    useEffect(() => {
+        axios.get("/api/posts")
+            .then((res) => setPosts(res.data))
+            .catch((error) => console.log("Error: ", error))
+            .finally(() => setLoading(false))
+    }, [])
 
     if (status === "loading" || isLoggedIn) return <Loader/>
 
@@ -145,7 +158,60 @@ export default function Explore(){
 
                 {/* posts */}
                 <div className="w-[56%] bg-white rounded-2xl overflow-hidden border border-stone-300 shadow-xl ">
-                    <ExplorePosts/>
+                    {/* <ExplorePosts/> */}
+                    <div className='flex flex-col items-center gap-4'>
+                        {
+                            isLoggedIn && (
+                            <div className='bg-white  rounded-xl pl-5 pr-4 py-6  flex gap-4 w-full'>
+                                <div className=' w-9 h-9 '>
+                                <div className=' w-full h-full border-2 border-stone-300 rounded-full bg-stone-300 text-white flex justify-center items-end overflow-hidden cursor-pointer ' >
+                                    <UserRound fill="white" strokeWidth={0} size={40} className='relative top-2' />
+                                </div>
+                                </div>
+                                <div className='flex flex-col gap-2 w-11/12 items-start '>
+                                <div className='flex justify-between gap-2 w-full '>
+                                    <input 
+                                        className=' w-10/12 border border-stone-300 px-3 py-1.5 rounded-xl '
+                                        onClick={() => setShowNewPost(true)} 
+                                        type="text" 
+                                        placeholder='Tell your friends about your thoughts...' 
+                                    />
+                                    <div
+                                        onClick={() => setShowNewPost(true)}  
+                                        className=' flex justify-center items-center gap-1.5 w-2/12 px-1.5 py-1.5 rounded-xl bg-[#F27C3A] text-white '
+                                    >
+                                        Post <SendHorizonal size={17}/> 
+                                    </div>
+                                    {
+                                        showNewPost && <NewPost setShowNewPost={setShowNewPost} />
+                                    }
+                                </div>
+                                {/* <div className='border border-stone-300 text-stone-500 font-semibold cursor-pointer rounded-lg flex gap-2 px-2 py-1 justify-center items-center text-sm'>
+                                    <Images size={17} />
+                                    Photo
+                                </div> */}
+                                </div>
+                            </div>
+                            )
+                        }
+                        <div className='bg-white rounded-xl w-full'>
+                            {
+                                loading 
+                                ? (
+                                    <div className='h-[80vh] flex justify-center items-center' >
+                                    <MiniSpinner/>
+                                    </div>
+                                ) : (
+                                    
+                                    posts?.map((post, index)=> (
+                                    <div className='px-4' key={index}>
+                                        <Post post={post} key={index} index={index} />
+                                    </div>
+                                    ))
+                                )
+                            }
+                        </div>
+                    </div>
                 </div>
 
                 {/* right */}

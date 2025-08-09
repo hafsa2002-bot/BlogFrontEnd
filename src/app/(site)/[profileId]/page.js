@@ -1,0 +1,224 @@
+'use client'
+import Loader from '@/components/Loader'
+import Post from '@/components/User/Post'
+import { Bookmark, Grid3X3, NotebookPen, SendHorizonal, Settings, UserRound } from 'lucide-react'
+import Image from 'next/image'
+import { useParams } from 'next/navigation'
+import React, {useCallback, useState, useEffect} from 'react'
+import axios from 'axios'
+import Link from 'next/link'
+import MiniSpinner from '@/components/MiniSpinner'
+import ProfileImagePopUp from '@/components/User/ProfileImagePopUp'
+import NewPost from '@/components/User/NewPost'
+
+export default function ProfilePageById() {
+    const [userInfo, setUserInfo] = useState({})
+    const [posts, setPosts] = useState([])
+    const [loading, setLoading] = useState(true)
+    const [showNewPost, setShowNewPost] = useState(false)
+    const [showProfileImage, setShowProfileImage] = useState(false)
+    const [viewMode, setviewMode] = useState("posts")
+    const [savedPosts, setSavedPosts] = useState([])
+    const params = useParams()
+    const id = params.profileId
+    /*
+    const fetchUserPosts = () => {
+        axios.get(`/api/posts/${id}`)
+            .then(response => setPosts(response.data))
+            .catch(error => console.log("Error: ", error))
+            .finally(() => setLoading(false))
+    }
+
+    const fetchSavedPosts = () => {
+        axios.get(`/api/users/${id}/savedPosts`)
+        .then(res => setSavedPosts(res.data.savedPosts))
+        .catch(err => console.log("Error: ", err))
+        // .finally(() => setLoading(false))
+    }
+        */
+
+    const fetchUserPosts = useCallback(() => {
+        axios.get(`/api/posts/${id}`)
+        .then(response => setPosts(response.data))
+        .catch(error => console.log("Error: ", error))
+        .finally(() => setLoading(false))
+    }, [id])
+
+    const fetchSavedPosts = useCallback(() => {
+        axios.get(`/api/users/${id}/savedPosts`)
+        .then(res => setSavedPosts(res.data.savedPosts))
+        .catch(err => console.log("Error: ", err))
+        // .finally(() => setLoading(false))
+    }, [id])
+    useEffect(() => {
+        const fetchUserInfo = async () => {
+            axios.get(`/api/users/${id}`)
+            .then(response => setUserInfo(response.data))
+            .catch(err => console.log("Error: ", err))
+        }
+    
+    
+        fetchUserInfo()
+        fetchUserPosts()
+        fetchSavedPosts()
+    }, [id, fetchUserPosts, fetchSavedPosts])
+
+    return (
+        <div className="bg-white px-7 pt-5 mb-10 rounded-2xl w-10/12">
+            {
+                !loading
+                ? (
+                    <div className=" flex flex-col items-center">
+                        <div className="flex justify-between mb-14 mt-5 w-11/12 ">
+                            <div  onClick={() => setShowProfileImage(true)} className="cursor-pointer">
+                                {
+                                    userInfo?.profileImage 
+                                    ? (
+                                        <div className="w-28 h-28 bg-stone-300 rounded-full border border-stone-400 overflow-hidden">
+                                        {/* <img src={`${userInfo?.profileImage}`} alt="profile image" /> */}
+                                        <Image src={`${userInfo?.profileImage}`} width={112} height={112} alt="profile image" className="object-cover" unoptimized />
+                                        </div>
+                                    ):(
+                                        <div className=' w-34 h-34 '>
+                                            <div className=' w-full h-full border-2 border-stone-300 rounded-full bg-stone-300 text-white flex justify-center items-end overflow-hidden cursor-pointer ' >
+                                                <UserRound fill="white" strokeWidth={0} size={130} className='relative top-5' />
+                                            </div>
+                                        </div>
+                                    )
+                                }
+                            </div>
+                            {
+                                showProfileImage && <ProfileImagePopUp setShowProfileImage={setShowProfileImage} photo={userInfo?.profileImage} />
+                            }
+                            <div className="flex flex-col gap-4 w-9/12">
+                                <div className="flex items-center justify-between  w-8/12">
+                                    <Link href={`/${userInfo?._id}`} className="font-semibold text-xl">{userInfo?.username}</Link>
+                                    <div className="flex gap-4 items-center">
+                                        <div className="font-semibold hover:bg-[#F27C3A] bg-[#F27C3A]/80  text-white rounded-lg py-1.5 px-4 cursor-pointer">Edit Profile</div>
+                                        <Settings size={21} className="cursor-pointer" />
+                                    </div>
+                                </div>
+                                <div className="flex justify-between w-6/12">
+                                    <div className="text-stone-500 flex gap-1.5"><span className="text-black font-semibold">{posts?.length}</span>posts </div>
+                                    <div className="text-stone-500 flex gap-1.5 cursor-pointer"><span className="text-black font-semibold">{userInfo?.followers?.length}</span>followers</div>
+                                    <div className="text-stone-500 flex gap-1.5 cursor-pointer"><span className="text-black font-semibold">{userInfo?.following?.length}</span>following</div>
+                                </div>
+                                <div className="w-8/12 text-[15px] mt-2 whitespace-pre-line">
+                                    {userInfo?.bio}
+                                </div>
+                            </div>
+                        </div>
+        
+                        <div className="w-11/12">
+                            <div className=" flex justify-center gap-5 items-center border-b border-stone-300 text-[15px]">
+                                <div
+                                    onClick={() => setviewMode("posts")} 
+                                    className={`cursor-pointer flex gap-1 items-center px-2 pb-1.5  ${(viewMode == "posts") ? 'font-medium border-b-2 px-0.5' : 'text-stone-500'}`}
+                                >
+                                    <Grid3X3 size={18} />
+                                    Posts
+                                </div>
+                                <div
+                                    onClick={() => setviewMode("saved")} 
+                                    className={`cursor-pointer flex gap-1 items-center px-2 pb-1.5 ${viewMode == "saved" ? 'font-medium border-b-2 px-0.5' : 'text-stone-500'}`}
+                                >
+                                    <Bookmark size={18} fill={`${viewMode == "saved" ? 'black' : 'white'}`} />
+                                    Saved
+                                </div>
+                            </div>
+                            <div>
+                                {/* <div>
+                                </div> */}
+                                {
+                                    viewMode === "posts" ? (
+                                        <div>
+                                        {
+                                            posts.length > 0 
+                                            ? (
+                                            <div className="">
+                                                {/* new post input */}
+                                                <div className=' py-6 px-4  flex gap-4 w-full border-b border-stone-300'>
+                                                    <div className=' w-9 h-9 relative flex justify-center items-center'>
+                                                        {
+                                                            userInfo?.profileImage
+                                                            ? (
+                                                                <div className='w-full h-full border border-stone-300 rounded-full  flex justify-center items-center overflow-hidden cursor-pointer ' >
+                                                                    <Image src={`${userInfo?.profileImage}`} width={36} height={36} alt='profile image' className='object-cover' unoptimized />
+                                                                </div>
+                                                            ):(
+                                                                <div className=' w-full h-full border-2 border-stone-300 rounded-full bg-stone-300 text-white flex justify-center items-end overflow-hidden cursor-pointer ' >
+                                                                    <UserRound fill="white" strokeWidth={0} size={40} className='relative top-2' />
+                                                                </div>
+                                                            )
+                                                        }
+                                                    </div>
+                                                    <div className='w-11/12 items-start'>
+                                                        <div className='flex justify-between  w-full '>
+                                                            <div
+                                                                onClick={() => setShowNewPost(true)} 
+                                                                className=' w-10/12 border-stone-300 text-stone-500  py-1.5 rounded-xl '
+                                                            >
+                                                                Tell your friends about your thoughts...
+                                                            </div>
+                                                            <div
+                                                                onClick={() => setShowNewPost(true)}  
+                                                                className=' flex justify-center items-center gap-1.5  px-2 py-1.5 rounded-xl font-semibold bg-[#F27C3A] text-white '
+                                                            >
+                                                                Post <SendHorizonal size={17} className=""/> 
+                                                            </div>
+                                                            {
+                                                                showNewPost && <NewPost setShowNewPost={setShowNewPost} posts={posts} setPosts={setPosts} author={userInfo} />
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                    
+                                                {/* posts */}
+                                                {posts?.map((post, index) => (
+                                                    <div key={index} className={`pl-4 pr-4 ${index !== posts.length-1 && 'border-b border-stone-300'}`}>
+                                                        <Post post={post} key={index}  index={index} length={posts.length } onPostDeleted={fetchUserPosts} />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            ): (
+                                                <div className="h-70 w-full text-3xl font-semibold text-stone-500 flex flex-col justify-center items-center">
+                                                    <div className="w-14 h-14 rounded-full border-3  flex justify-center items-center">
+                                                        <NotebookPen size={30} />
+                                                    </div>
+                                                    No posts Yet
+                                                </div>
+                                            )
+                                        }
+                                        </div>
+                                    ) : viewMode === "saved" ? (
+                                        <>
+                                            {
+                                                savedPosts.length > 0 ? (
+                                                    savedPosts.map((post, index) => (
+                                                        <div key={index} className={`px-5 ${ index !== savedPosts.length-1 && 'border-b border-stone-300'}`}>
+                                                            <Post post={post} onPostDeleted={fetchSavedPosts} />
+                                                        </div>
+                                                    ))
+                                                ) : (
+                                                    <div className=" w-full h-[50vh] flex flex-col gap-2 justify-center items-center">
+                                                        <Image src="/images/NotFound.png" width={120} height={120} alt="not found image"/>
+                                                        <p className="text-3xl text-stone-400 font-semibold">No saved posts.</p>
+                                                    </div>
+                                                )
+                                            }
+                                        </>
+                                    ): null
+                                }
+                            </div>
+                        </div>
+                    </div>
+                )
+                : (
+                    <div className='w-full h-[80vh] flex justify-center items-center' >
+                        <MiniSpinner/>
+                    </div>
+                )
+            }
+        </div>
+    )
+}

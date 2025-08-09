@@ -53,3 +53,74 @@ export async function GET(req, {params}){
         return new NextResponse("Server error: " + error.message, {status: 500})
     }
 }
+
+export const DELETE = async (req, {params}) => {
+    try{
+        await connect()
+        const {postId} = await params
+        const {commentId, userId} = await req.json()
+
+        const comment = await Comment.findById(commentId)
+        if(!comment){
+            return new NextResponse('Comment not found', {status: 404})
+        }
+
+        // to check if user is authorized to delete the comment
+        if(comment.author.toString() !== userId){
+            return new NextResponse("Unauthorized", {status: 403})
+        }
+
+        await Comment.findByIdAndDelete(commentId)
+
+        // remove reference from the post
+        await Post.findByIdAndUpdate(postId, {
+            $pull: {comments: commentId}
+        })
+
+        return new NextResponse("Comment deleted: " + comment, {status: 200})
+
+    } catch (error) {
+        return new NextResponse("Error deleting comment: " + error.message, {
+            status: 500
+        })
+    }
+}
+
+export const PATCH = async (req, {params}) => {
+    try{
+        await connect()
+        const formData = await req.formData()
+        const commentId = formData.get("commentId")
+        const content = formData.get("content")
+
+        if (!commentId || !content) {
+            return new NextResponse("Missing commentId or content", { status: 400 })
+        }
+        
+        const comment = await Comment.findById(commentId)
+        if(!comment){
+            return new NextResponse("Comment not found", {status:404})
+        }
+
+        const createdAt = new Date(comment.createdAt)
+        const now = new Date()
+        const timeDiff = now - createdAt
+        const twentyFourHours = 24 * 60 * 60 * 1000;
+
+        if(timeDiff > twentyFourHours){
+            return new NextResponse("Comment can no longer be edited (after 24h)", {status: 403})
+        }
+
+        comment.content = content
+        await comment.save()
+
+        return NextResponse.json({
+            message: 'comment updated',
+            comment
+        }, {status: 200})
+    }catch(error){
+        return new NextResponse("Error editing comment: " + error.message, {
+            status: 500
+        })
+    }
+}
